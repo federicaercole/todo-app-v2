@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+<html lang="en">
+
+<%- include("./partials/head.ejs") %>
+
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include("./partials/menu.ejs") %>
+      <main>
+        <h1>
+          <%= title %>
+        </h1>
+        <a href="/todo/new">Add a new todo</a>
+        <%- include("./partials/todos.ejs") %>
+      </main>
   </body>
+
 </html>

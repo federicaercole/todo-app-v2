@@ -1,0 +1,25 @@
+<% if (todos.length>0) { %>
+    <% todos.forEach( todo=> { %>
+        <article>
+            <h2>
+                <%= todo.title %>
+            </h2>
+            <p>
+                Due Date: <%= todo.due_date %>
+            </p>
+            <p>
+                <%= todo.priority %>
+            </p>
+            <p>
+                <%= todo.category %>
+            </p>
+            <% if (todo.done==0) { %>
+                <p>Not Done</p>
+                <% } else {%>
+                    <p>Done</p>
+                    <%}%>
+        </article>
+        <% }) %>
+            <% } else {%>
+                <p>No todos here :(</p>
+                <%}%>

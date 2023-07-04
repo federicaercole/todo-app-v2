@@ -1,0 +1,14 @@
+<nav>
+    <ul>
+        <li><a href="/">All todos</a></li>
+        <% if (categories.length>0) { %>
+            <% categories.forEach( category=> { %>
+                <li>
+                    <a href="/category/<%= category.url%>">
+                        <%= category.name %>
+                    </a>
+                </li>
+                <% }) %>
+                    <% } %>
+    </ul>
+</nav>
