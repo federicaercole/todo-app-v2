@@ -1,25 +1,26 @@
 <% if (todos.length>0) { %>
-    <% todos.forEach( todo=> { %>
-        <article>
-            <h2>
-                <%= todo.title %>
-            </h2>
-            <p>
-                Due Date: <%= todo.due_date %>
-            </p>
-            <p>
-                <%= todo.priority %>
-            </p>
-            <p>
-                <%= todo.category %>
-            </p>
-            <% if (todo.done==0) { %>
-                <p>Not Done</p>
-                <% } else {%>
-                    <p>Done</p>
-                    <%}%>
-        </article>
-        <% }) %>
-            <% } else {%>
-                <p>No todos here :(</p>
-                <%}%>
+    <% dates.forEach( date=> { %>
+        <h2>
+            <%= date.toLocaleDateString('en-GB') %>
+        </h2>
+        <% const todosByDate=todos.filter(todo=>todo.due_date.toString()===date.toString())%>
+            <% todosByDate.forEach( todo=> { %>
+                <article data-id="<%= todo.todo_id %>">
+                    <h2>
+                        <%= todo.title %>
+                    </h2>
+                    <label for="<%= todo.todo_id %>" class="visually-hidden">Mark "<%= todo.title %>" todo as
+                            done</label>
+                    <input id="<%= todo.todo_id %>" name="done" type="checkbox" <%=todo.done===0 ? "" : "checked" %>>
+                    <p>
+                        <%= todo.priority %>
+                    </p>
+                    <p>
+                        <%= todo.category %>
+                    </p>
+                </article>
+                <% }) %>
+                    <% }) %>
+                        <% } else {%>
+                            <p>No todos here :(</p>
+                            <%}%>
