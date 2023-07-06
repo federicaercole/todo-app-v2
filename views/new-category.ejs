@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("./partials/head.ejs") %>
+
+  <body>
+    <%- include("./partials/menu.ejs") %>
+      <main>
+        <h1>
+          <%= title %>
+        </h1>
+        <form method="post" action="/category/new">
+          <label for="new-category">New category</label>
+          <input type="text" id="new-category" name="name">
+          <button type="submit" id="submit">Create category</button>
+        </form>
+      </main>
+      <script>
+        const form = document.querySelector("form");
+        const input = document.querySelector("input")
+        form.addEventListener("submit", () => {
+          const h1 = document.querySelector("h1");
+          const message = document.createElement("p");
+          message.textContent = "New category added!";
+          h1.after(message);
+          setTimeout(() => { message.remove() }, 2000)
+        });
+      </script>
+  </body>
+
+</html>
