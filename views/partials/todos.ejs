@@ -11,7 +11,7 @@
                     </h2>
                     <label for="<%= todo.todo_id %>" class="visually-hidden">Mark "<%= todo.title %>" todo as
                             done</label>
-                    <input id="<%= todo.todo_id %>" name="done" type="checkbox" <%=todo.done===0 ? "" : "checked" %>>
+                    <input id="<%= todo.todo_id %>" type="checkbox" <%=todo.done===0 ? "" : "checked" %>>
                     <p>
                         <%= todo.priority %>
                     </p>
