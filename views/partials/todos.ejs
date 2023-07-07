@@ -5,16 +5,21 @@
         </h2>
         <% const todosByDate=todos.filter(todo=>todo.due_date.toString()===date.toString())%>
             <% todosByDate.forEach( todo=> { %>
-                <article data-id="<%= todo.todo_id %>">
+                <article>
                     <h2>
                         <%= todo.title %>
                     </h2>
                     <a href="/todo/<%= todo.todo_id%>/edit">Edit <span class="visually-hidden">
                             <%= todo.title %>
                         </span></a>
-                    <label for="<%= todo.todo_id %>" class="visually-hidden">Mark "<%= todo.title %>" todo as
+                    <button type="button" class="delete-todo" data-id="<%= todo.todo_id %>">Delete <span
+                            class="visually-hidden">
+                            <%= todo.title %>
+                        </span></button>
+                    <label for="todo-<%= todo.todo_id %>" class="visually-hidden">Mark "<%= todo.title %>" todo as
                             done</label>
-                    <input id="<%= todo.todo_id %>" type="checkbox" <%=todo.done===0 ? "" : "checked" %>>
+                    <input data-id="<%= todo.todo_id %>" id="todo-<%= todo.todo_id %>" type="checkbox" <%=todo.done===0
+                        ? "" : "checked" %>>
                     <p>
                         <%= todo.priority %>
                     </p>

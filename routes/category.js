@@ -10,9 +10,9 @@ router.post('/new', categoryController.categoryNewPost);
 router.get('/:category', categoryController.todosByCategoryGet);
 
 //Delete
-router.delete('/:category', categoryController.categoryDelete);
+router.delete('/:category/delete', categoryController.categoryDelete);
 
 //Edit
-router.put('/:category', categoryController.categoryPut);
+router.put('/:category/edit', categoryController.categoryPut);
 
 module.exports = router;

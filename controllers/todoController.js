@@ -41,4 +41,10 @@ async function todoEditPut(req, res) {
     res.redirect(`/todo/${id}/edit`);
 }
 
-module.exports = { todoNewGet, todoNewPost, todoEditGet, todoEditPut };
+async function todoDelete(req, res) {
+    const { id, url } = req.body;
+    await sql.query("DELETE FROM todos WHERE todo_id = ?", id);
+    await res.json({ redirect: url });
+}
+
+module.exports = { todoNewGet, todoNewPost, todoEditGet, todoEditPut, todoDelete };

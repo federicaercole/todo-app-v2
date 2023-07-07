@@ -9,7 +9,7 @@ const renameBtn = document.querySelector("#rename");
 renameBtn.addEventListener("click", createRenameDOM);
 
 async function deleteCategory() {
-    const response = await fetch(`/category/${categoryUrl}`, { method: "DELETE" });
+    const response = await fetch(`/category/${categoryUrl}/delete`, { method: "DELETE" });
     const data = await response.json();
     window.location.href = data.redirect;
 }
@@ -63,7 +63,7 @@ function resetDOM() {
 
 async function saveChanges() {
     const inputValue = document.querySelector("input[type='text']").value;
-    const response = await fetch(`/category/${categoryUrl}`, {
+    const response = await fetch(`/category/${categoryUrl}/edit`, {
         method: "PUT", headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ name: inputValue })
     });

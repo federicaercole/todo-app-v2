@@ -10,4 +10,7 @@ router.post('/new', todoController.todoNewPost);
 router.get('/:id/edit', todoController.todoEditGet);
 router.put('/:id/edit', todoController.todoEditPut);
 
+//Delete todo
+router.delete('/:id/delete', todoController.todoDelete);
+
 module.exports = router;
