@@ -6,10 +6,12 @@
   <body>
     <%- include("./partials/menu.ejs") %>
       <main>
-        <h1>
-          <%= title %>
-        </h1>
-        <a href="/todo/new">Add a new todo</a>
+        <header>
+          <h1>
+            <%= title %>
+          </h1>
+          <%- include("./partials/filters.ejs") %>
+        </header>
         <%- include("./partials/todos.ejs") %>
       </main>
       <script src="/javascripts/script.js"></script>

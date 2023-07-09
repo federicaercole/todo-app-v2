@@ -1,8 +1,97 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap');
+
+/* Reset*/
+* {
+  box-sizing: border-box;
+  margin: 0;
 }
 
-a {
-  color: #00B7FF;
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/*Basic styles*/
+:root {
+  --gap-start-page: 3rem;
+}
+
+body {
+  font-family: 'Work Sans', sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+}
+
+body>nav {
+  flex-basis: 20rem;
+  flex-grow: 1;
+}
+
+body>main {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: 65%;
+}
+
+.visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+}
+
+/*Nav*/
+nav ul:first-of-type {
+  margin-block: var(--gap-start-page);
+}
+
+nav *+* {
+  margin-block-start: 1rem;
+}
+
+/* Main */
+main {
+  padding: var(--gap-start-page);
+}
+
+main header {
+  margin-block-end: var(--gap-start-page);
+}
+
+main>*+* {
+  margin-block-start: 3rem;
+}
+
+section {
+  display: grid;
+  gap: 2rem;
+}
+
+section h2 {
+  grid-column: 1/-1;
+}
+
+section article {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  max-width: 100%;
+}
+
+section input[type="checkbox"] {
+  flex-basis: 5%;
+}
+
+section div {
+  flex-basis: 95%;
+}
+
+/* Media queries*/
+@media screen and (min-width: 43rem) {
+  section {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
