@@ -1,6 +1,7 @@
 const categoryUrl = document.querySelector("main").dataset.id;
 const h1 = document.querySelector("h1");
 const categoryName = h1.innerText;
+const headerDiv = document.querySelector("header>div");
 
 const deleteBtn = document.querySelector("#delete");
 deleteBtn.addEventListener("click", deleteCategory);
@@ -29,6 +30,7 @@ function createRenameDOM() {
     saveBtn.textContent = "Save";
     saveBtn.id = "save";
     saveBtn.setAttribute("type", "submit");
+    headerDiv.setAttribute("class", "rename");
 
     h1.replaceWith(input);
     renameBtn.replaceWith(undoBtn);
@@ -52,6 +54,7 @@ function resetDOM() {
     const saveBtn = document.querySelector("#save");
     const h1 = document.createElement("h1");
     h1.textContent = categoryName;
+    headerDiv.removeAttribute("class");
 
     input.replaceWith(h1);
     undoBtn.replaceWith(renameBtn);

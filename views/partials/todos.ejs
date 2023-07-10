@@ -6,26 +6,31 @@
             </h2>
             <% const todosByDate=todos.filter(todo=>todo.due_date.toString()===date.toString())%>
                 <% todosByDate.forEach( todo=> { %>
-                    <article>
-                        <label for="todo-<%= todo.todo_id %>" class="visually-hidden">Mark "<%= todo.title %>" todo as
-                                done</label>
-                        <input data-id="<%= todo.todo_id %>" id="todo-<%= todo.todo_id %>" type="checkbox"
-                            <%=todo.done===0 ? "" : "checked" %>>
-                        <div>
-                            <h3>
-                                <%= todo.title %>
-                            </h3>
-                            <h4>
-                                <%= todo.priority %>
-                            </h4>
-                        </div>
-                        <a href="/todo/<%= todo.todo_id%>/edit">Edit <span class="visually-hidden">
-                                <%= todo.title %>
-                            </span></a>
-                        <button type="button" class="delete-todo" data-id="<%= todo.todo_id %>">Delete <span
-                                class="visually-hidden">
-                                <%= todo.title %>
-                            </span></button>
+                    <article class="<%= todo.priority.toLowerCase() %> <%=todo.done===0 ? "" : " done" %>"
+                        data-id="<%=todo.todo_id %>">
+                            <div>
+                                <label for="todo-<%= todo.todo_id %>" class="visually-hidden">Mark "<%= todo.title %>"
+                                        todo
+                                        as
+                                        done</label>
+                                <input data-id="<%= todo.todo_id %>" id="todo-<%= todo.todo_id %>" type="checkbox"
+                                    <%=todo.done===0 ? "" : "checked" %>>
+                                <h3>
+                                    <%= todo.title %>
+                                </h3>
+                            </div>
+                            <div>
+                                <h4>
+                                    <%= todo.priority %>
+                                </h4>
+                                <a href="/todo/<%= todo.todo_id%>/edit">Edit <span class="visually-hidden">
+                                        <%= todo.title %>
+                                    </span></a>
+                                <button type="button" class="delete-todo" data-id="<%= todo.todo_id %>">Delete <span
+                                        class="visually-hidden">
+                                        <%= todo.title %>
+                                    </span></button>
+                            </div>
                     </article>
                     <% }) %>
         </section>

@@ -6,13 +6,19 @@
   <body>
     <%- include("./partials/menu.ejs") %>
       <main data-id="<%= category.url %>">
-        <h1>
-          <%= title %>
-        </h1>
-        <button type="button" id="rename">Rename</button>
-        <button type="button" id="delete">Delete</button>
-        <%- include("./partials/filters.ejs") %>
-          <%- include("./partials/todos.ejs") %>
+        <header>
+          <div>
+            <h1>
+              <%= title %>
+            </h1>
+            <div>
+              <button type="button" id="rename">Rename</button>
+              <button type="button" id="delete">Delete</button>
+            </div>
+          </div>
+          <%- include("./partials/filters.ejs") %>
+        </header>
+        <%- include("./partials/todos.ejs") %>
       </main>
       <script src="/javascripts/script.js"></script>
       <script src="/javascripts/category-script.js"></script>
