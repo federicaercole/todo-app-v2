@@ -48,8 +48,8 @@ body {
   background-color: var(--background-color);
 }
 
-body>nav {
-  flex-basis: 30rem;
+body>.navigation {
+  flex-basis: clamp(15rem, 25%, 30rem);
   flex-grow: 1;
   padding-inline-start: clamp(1rem, 3%, 6rem);
 }
@@ -57,7 +57,6 @@ body>nav {
 body>main {
   flex-basis: 0;
   flex-grow: 999;
-  min-inline-size: 65%;
 }
 
 .visually-hidden {
@@ -89,9 +88,20 @@ h4 {
 }
 
 /*Nav*/
+.navigation {
+  display: none;
+  margin-block-start: 3rem;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--background-color);
+  height: fit-content;
+  min-height: 100vh;
+  padding-block-end: 2rem;
+}
 
 nav ul:first-of-type {
-  margin-block: 3.5rem;
+  margin-block: 3rem;
 }
 
 nav li+li {
@@ -112,7 +122,7 @@ main {
 main header {
   padding-block-end: 32px;
   border-bottom: 2px dashed var(--secondary-color-400);
-  margin-top: 3rem;
+  margin-block-start: 4rem;
 }
 
 header>*+* {
@@ -209,7 +219,7 @@ section div {
   flex-basis: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 /*Todos by category page*/
@@ -250,17 +260,15 @@ a[aria-current] {
 
 *:focus {
   outline: 3px solid var(--secondary-color-800);
-  outline-offset: 5px;
-}
-
-input[type="checkbox"]:focus {
   outline-offset: 3px;
 }
 
-button:not(.link):hover {
+button:not(.link):hover,
+button:not(.link):focus {
   background-color: var(--accent-color-400);
   color: var(--background-color);
   text-decoration: none;
+  box-shadow: 0px 0px 0px var(--secondary-color-800);
 }
 
 .underline {
@@ -296,7 +304,6 @@ select {
   font-family: inherit;
   font-size: var(--fs-100);
   padding: 4px 12px;
-  box-shadow: 4px 4px 0px var(--secondary-color-800);
   max-width: 100%;
 }
 
@@ -333,7 +340,25 @@ form button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px;
+  padding: 1.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: clamp(1rem, 6%, 3rem);
+  z-index: 2;
+  box-shadow: none;
+  background-image: url("../images/open-menu.svg");
+  background-repeat: no-repeat;
+  background-size: 32px auto;
+  background-position: 50%;
+}
+
+#menu[aria-expanded="true"] {
+  background-image: url("../images/close-menu.svg");
+}
+
+.show-menu {
+  display: block;
 }
 
 /*Modal*/
@@ -347,7 +372,7 @@ form button {
   backdrop-filter: blur(3px);
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 5;
   position: fixed;
   inset: 0;
 }
@@ -377,8 +402,29 @@ form button {
 }
 
 /* Media queries*/
-@media screen and (min-width: 43rem) {
+@media screen and (min-width: 50rem) {
+  .navigation {
+    display: block;
+    position: static;
+  }
+
+  #menu {
+    display: none;
+  }
+
+  main header {
+    margin-block-start: 2rem;
+  }
+}
+
+@media screen and (min-width: 75rem) {
   section {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (prefers-reduced-motion:no-preference) {
+  button:not(.link) {
+    transition: box-shadow ease 0.5s;
   }
 }

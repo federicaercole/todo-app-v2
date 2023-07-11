@@ -6,9 +6,11 @@
   <body>
     <%- include("./partials/menu.ejs") %>
       <main>
-        <h1>
-          <%= title %>
-        </h1>
+        <header>
+          <h1>
+            <%= title %>
+          </h1>
+        </header>
         <% function adjustDateToLocalTimeZone(date){ const dateCopy=new Date(date); dateCopy.setTime(dateCopy.getTime()
           - dateCopy.getTimezoneOffset()*60*1000); return dateCopy.toISOString().split('T')[0]; }%>
           <form method="post" action="/todo/<%= todo.todo_id %>/edit?_method=PUT">
@@ -42,6 +44,7 @@
             <button type="submit">Edit Todo</button>
           </form>
       </main>
+      <script src="/javascripts/navigation.js"></script>
   </body>
 
 </html>

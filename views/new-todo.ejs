@@ -6,9 +6,11 @@
   <body>
     <%- include("./partials/menu.ejs") %>
       <main>
-        <h1>
-          <%= title %>
-        </h1>
+        <header>
+          <h1>
+            <%= title %>
+          </h1>
+        </header>
         <% if (categories.length>0) { %>
           <form method="post" action="/todo/new">
             <div>
@@ -44,6 +46,7 @@
             <p>You need to <a class="underline" href="/category/new">add a new category</a> before creating a todo!</p>
             <% } %>
       </main>
+      <script src="/javascripts/navigation.js"></script>
   </body>
 
 </html>

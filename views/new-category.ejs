@@ -6,9 +6,11 @@
   <body>
     <%- include("./partials/menu.ejs") %>
       <main>
-        <h1>
-          <%= title %>
-        </h1>
+        <header>
+          <h1>
+            <%= title %>
+          </h1>
+        </header>
         <form method="post" action="/category/new">
           <div>
             <label for="new-category">New category</label>
@@ -28,6 +30,7 @@
           setTimeout(() => { message.remove() }, 2000)
         });
       </script>
+      <script src="/javascripts/navigation.js"></script>
   </body>
 
 </html>
