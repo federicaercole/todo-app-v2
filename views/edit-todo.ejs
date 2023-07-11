@@ -12,25 +12,33 @@
         <% function adjustDateToLocalTimeZone(date){ const dateCopy=new Date(date); dateCopy.setTime(dateCopy.getTime()
           - dateCopy.getTimezoneOffset()*60*1000); return dateCopy.toISOString().split('T')[0]; }%>
           <form method="post" action="/todo/<%= todo.todo_id %>/edit?_method=PUT">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" value="<%= todo.title %>">
-            <label for="due-date">Due date</label>
-            <input type="date" id="due-date" name="due_date" value="<%= adjustDateToLocalTimeZone(todo.due_date) %>">
-            <label for="priority">Priority</label>
-            <select id="priority" name="priority">
-              <option value="None" <%=todo.priority==="None" ? "selected" : "" %>>None</option>
-              <option value="Low" <%=todo.priority==="Low" ? "selected" : "" %>>Low</option>
-              <option value="Medium" <%=todo.priority==="Medium" ? "selected" : "" %>>Medium</option>
-              <option value="High" <%=todo.priority==="High" ? "selected" : "" %>>High</option>
-            </select>
-            <label for="category">Category</label>
-            <select id="category" name="category">
-              <% categories.forEach(category=>{ %>
-                <option value="<%= category.cat_id %>" <%=todo.category==category.cat_id ? "selected" : "" %>>
-                  <%= category.name %>
-                </option>
-                <% }) %>
-            </select>
+            <div>
+              <label for="title">Title</label>
+              <input type="text" id="title" name="title" value="<%= todo.title %>">
+            </div>
+            <div>
+              <label for="due-date">Due date</label>
+              <input type="date" id="due-date" name="due_date" value="<%= adjustDateToLocalTimeZone(todo.due_date) %>">
+            </div>
+            <div>
+              <label for="priority">Priority</label>
+              <select id="priority" name="priority">
+                <option value="None" <%=todo.priority==="None" ? "selected" : "" %>>None</option>
+                <option value="Low" <%=todo.priority==="Low" ? "selected" : "" %>>Low</option>
+                <option value="Medium" <%=todo.priority==="Medium" ? "selected" : "" %>>Medium</option>
+                <option value="High" <%=todo.priority==="High" ? "selected" : "" %>>High</option>
+              </select>
+            </div>
+            <div>
+              <label for="category">Category</label>
+              <select id="category" name="category">
+                <% categories.forEach(category=>{ %>
+                  <option value="<%= category.cat_id %>" <%=todo.category==category.cat_id ? "selected" : "" %>>
+                    <%= category.name %>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
             <button type="submit">Edit Todo</button>
           </form>
       </main>

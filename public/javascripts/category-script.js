@@ -4,10 +4,26 @@ const categoryName = h1.innerText;
 const headerDiv = document.querySelector("header>div");
 
 const deleteBtn = document.querySelector("#delete");
-deleteBtn.addEventListener("click", deleteCategory);
+deleteBtn.addEventListener("click", openModalCategory);
 
 const renameBtn = document.querySelector("#rename");
 renameBtn.addEventListener("click", createRenameDOM);
+
+function openModalCategory() {
+    const modal = document.querySelector(".modal");
+    const h2 = modal.querySelector("h2");
+    const p = modal.querySelector("p");
+    h2.textContent = "Delete this category?"
+    p.textContent = "Deleting a category deletes all the todos associated with the category!"
+    modal.classList.remove("hidden");
+    const cancelBtn = document.querySelector("#cancel");
+    const confirmBtn = document.querySelector("#confirm");
+
+    cancelBtn.addEventListener("click", () => {
+        modal.classList.add("hidden");
+    });
+    confirmBtn.addEventListener("click", deleteCategory);
+}
 
 async function deleteCategory() {
     const response = await fetch(`/category/${categoryUrl}/delete`, { method: "DELETE" });
@@ -22,10 +38,10 @@ function createRenameDOM() {
     const input = document.createElement("input");
     input.setAttribute("type", "text");
     input.value = categoryName;
-    const undoBtn = document.createElement("button");
-    undoBtn.textContent = "Undo";
-    undoBtn.id = "undo";
-    undoBtn.setAttribute("type", "button");
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.id = "cancel-cat";
+    cancelBtn.setAttribute("type", "button");
     const saveBtn = document.createElement("button");
     saveBtn.textContent = "Save";
     saveBtn.id = "save";
@@ -33,10 +49,10 @@ function createRenameDOM() {
     headerDiv.setAttribute("class", "rename");
 
     h1.replaceWith(input);
-    renameBtn.replaceWith(undoBtn);
+    renameBtn.replaceWith(cancelBtn);
     deleteBtn.replaceWith(saveBtn);
 
-    undoBtn.addEventListener("click", resetDOM);
+    cancelBtn.addEventListener("click", resetDOM);
     saveBtn.addEventListener("click", saveChanges);
 }
 
@@ -45,19 +61,21 @@ function resetDOM() {
     renameBtn.textContent = "Rename";
     renameBtn.setAttribute("type", "button");
     renameBtn.setAttribute("id", "rename");
+    renameBtn.classList.add("link");
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.setAttribute("type", "button");
     deleteBtn.setAttribute("id", "delete");
+    deleteBtn.classList.add("link");
     const input = document.querySelector("input[type='text']");
-    const undoBtn = document.querySelector("#undo");
+    const cancelBtn = document.querySelector("#cancel-cat");
     const saveBtn = document.querySelector("#save");
     const h1 = document.createElement("h1");
     h1.textContent = categoryName;
     headerDiv.removeAttribute("class");
 
     input.replaceWith(h1);
-    undoBtn.replaceWith(renameBtn);
+    cancelBtn.replaceWith(renameBtn);
     saveBtn.replaceWith(deleteBtn);
 
     renameBtn.addEventListener("click", createRenameDOM);

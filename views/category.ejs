@@ -12,16 +12,17 @@
               <%= title %>
             </h1>
             <div>
-              <button type="button" id="rename">Rename</button>
-              <button type="button" id="delete">Delete</button>
+              <button type="button" id="rename" class="link">Rename</button>
+              <button type="button" id="delete" class="link">Delete</button>
             </div>
           </div>
           <%- include("./partials/filters.ejs") %>
         </header>
         <%- include("./partials/todos.ejs") %>
       </main>
-      <script src="/javascripts/script.js"></script>
-      <script src="/javascripts/category-script.js"></script>
+      <%- include("./partials/modal.ejs") %>
+        <script src="/javascripts/script.js"></script>
+        <script src="/javascripts/category-script.js"></script>
   </body>
 
 </html>

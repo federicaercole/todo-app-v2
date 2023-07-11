@@ -26,8 +26,8 @@
                                 <a href="/todo/<%= todo.todo_id%>/edit">Edit <span class="visually-hidden">
                                         <%= todo.title %>
                                     </span></a>
-                                <button type="button" class="delete-todo" data-id="<%= todo.todo_id %>">Delete <span
-                                        class="visually-hidden">
+                                <button type="button" class="delete-todo link" data-id="<%= todo.todo_id %>">Delete
+                                    <span class="visually-hidden">
                                         <%= todo.title %>
                                     </span></button>
                             </div>
@@ -36,5 +36,5 @@
         </section>
         <% }) %>
             <% } else {%>
-                <p>No todos here :(</p>
+                <p>No todos here! <a href="/todo/new" class="underline">Add a new todo</a></p>
                 <%}%>

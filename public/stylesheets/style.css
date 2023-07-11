@@ -17,7 +17,6 @@ a {
 
 /*Basic styles*/
 :root {
-  --gap-start-page: 3rem;
   --fs-50: clamp(0.88rem, calc(0.96rem + -0.09vw), 0.94rem);
   --fs-100: clamp(1.13rem, calc(1.08rem + 0.22vw), 1.25rem);
   --fs-200: clamp(1.35rem, calc(1.20rem + 0.73vw), 1.77rem);
@@ -32,8 +31,8 @@ a {
   --none-priority: #cbd5e1;
   --none-priority-light: hsl(213, 7%, 84%);
   --background-color: #f1f5f9;
-  --secondary-color: rgb(25, 95, 192);
   --accent-color: rgb(156, 196, 251);
+  --accent-color-400: rgb(81, 139, 221);
   --secondary-color-400: hsl(215, 14%, 64%);
   --secondary-color-800: hsl(213, 14%, 25%);
   --secondary-color-900: hsl(213, 16%, 13%);
@@ -52,7 +51,7 @@ body {
 body>nav {
   flex-basis: 30rem;
   flex-grow: 1;
-  padding-inline-start: 5rem;
+  padding-inline-start: clamp(1rem, 3%, 6rem);
 }
 
 body>main {
@@ -105,33 +104,29 @@ nav li {
   gap: 8px;
 }
 
-nav .new li {
-  font-weight: 500;
-}
-
 /* Main */
 main {
-  padding: var(--gap-start-page);
+  padding: clamp(1rem, 6%, 3rem);
 }
 
 main header {
-  margin-block-end: var(--gap-start-page);
-  padding-block-end: 2rem;
+  padding-block-end: 32px;
   border-bottom: 2px dashed var(--secondary-color-400);
+  margin-top: 3rem;
 }
 
 header>*+* {
-  margin-block-start: 1rem;
+  margin-block-start: 16px;
 }
 
 main>*+* {
-  margin-block-start: 6rem;
+  margin-block-start: clamp(3rem, 12%, 6rem);
 }
 
 /*Todos*/
 section {
   display: grid;
-  gap: 2rem;
+  gap: 32px;
 }
 
 section h2 {
@@ -142,11 +137,10 @@ section article {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  padding: 24px;
-  max-width: 100%;
+  padding: clamp(1rem, 3%, 1.5rem);
   align-items: center;
-  border: 5px solid var(--secondary-color-800);
-  box-shadow: 10px 10px 0px -1px var(--secondary-color-800);
+  border: 3px solid var(--secondary-color-800);
+  box-shadow: 7px 7px 0px var(--secondary-color-800);
 }
 
 .done h3 {
@@ -187,7 +181,7 @@ section article {
 
 section input[type="checkbox"] {
   appearance: none;
-  background-color: var(--background-color);
+  background-color: #FFF;
   color: var(--secondary-color-800);
   width: max(44px, 2em);
   height: max(44px, 2em);
@@ -230,30 +224,89 @@ header div {
   align-items: center;
 }
 
+.rename input[type="text"] {
+  font-size: var(--fs-200);
+  font-weight: 500;
+}
+
 div h1 {
   margin-right: auto;
 }
 
-input[type="text"] {
-  max-width: 100%;
-  border: 5px solid var(--secondary-color-800);
-  font-family: inherit;
-  font-weight: 500;
-  font-size: var(--fs-300);
-  padding: 4px 12px;
-  box-shadow: 10px 10px 0px -1px var(--secondary-color-800);
-}
-
-/*Links*/
+/*Links and button states*/
 
 a {
   color: var(--secondary-color-900);
 }
 
+a:hover,
+a:active,
+.link:hover,
+.link:active,
+a[aria-current] {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+*:focus {
+  outline: 3px solid var(--secondary-color-800);
+  outline-offset: 5px;
+}
+
+input[type="checkbox"]:focus {
+  outline-offset: 3px;
+}
+
+button:not(.link):hover {
+  background-color: var(--accent-color-400);
+  color: var(--background-color);
+  text-decoration: none;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+/*Forms*/
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: max-content;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+}
+
+form *+* {
+  margin-block-start: 12px;
+}
+
+form>*+* {
+  margin-block-start: 32px;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+  border: 3px solid var(--secondary-color-800);
+  font-family: inherit;
+  font-size: var(--fs-100);
+  padding: 4px 12px;
+  box-shadow: 4px 4px 0px var(--secondary-color-800);
+  max-width: 100%;
+}
+
+form select {
+  background-color: #FFF;
+}
+
 /*Buttons*/
 
-article button,
-header button {
+button {
   font-family: inherit;
   font-size: inherit;
   background-color: transparent;
@@ -263,16 +316,64 @@ header button {
   cursor: pointer;
 }
 
-#save,
-#undo {
+button:not(.link) {
   border: 3px solid var(--secondary-color-800);
   padding: 8px 16px;
-  font-weight: 500;
   background-color: var(--accent-color);
+  box-shadow: 4px 4px 0px var(--secondary-color-800);
 }
 
-#save {
+#save,
+form button {
   font-weight: 500;
+}
+
+/*Menu button*/
+#menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+/*Modal*/
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  position: fixed;
+  inset: 0;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 500px;
+  padding: 32px;
+  background-color: var(--background-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid var(--secondary-color-800);
+}
+
+.modal-content>*+* {
+  margin-block-start: 2rem;
+}
+
+.modal-content>div {
+  display: flex;
+  gap: 48px;
 }
 
 /* Media queries*/
