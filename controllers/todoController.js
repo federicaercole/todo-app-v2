@@ -19,6 +19,7 @@ async function todoNewGet(req, res) {
 async function todoNewPost(req, res) {
     const { title, due_date, priority, category } = req.body
     await createTodo(title, due_date, priority, category);
+    await req.flash("success", "New todo created");
     res.redirect('/');
 }
 
@@ -38,12 +39,14 @@ async function todoEditPut(req, res) {
     const id = req.params.id;
     const { title, due_date, priority, category } = req.body;
     await updateTodo(title, due_date, priority, category, id);
+    req.flash("success", "Todo edited");
     res.redirect(`/todo/${id}/edit`);
 }
 
 async function todoDelete(req, res) {
     const { id, url } = req.body;
     await sql.query("DELETE FROM todos WHERE todo_id = ?", id);
+    await req.flash("success", "Todo deleted");
     await res.json({ redirect: url });
 }
 

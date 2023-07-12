@@ -258,13 +258,14 @@ a[aria-current] {
   font-weight: 500;
 }
 
-*:focus {
+*:focus,
+.close:hover {
   outline: 3px solid var(--secondary-color-800);
   outline-offset: 3px;
 }
 
-button:not(.link):hover,
-button:not(.link):focus {
+button:not(.link, .close):hover,
+button:not(.link, .close):focus {
   background-color: var(--accent-color-400);
   color: var(--background-color);
   text-decoration: none;
@@ -323,7 +324,7 @@ button {
   cursor: pointer;
 }
 
-button:not(.link) {
+button:not(.link, .close) {
   border: 3px solid var(--secondary-color-800);
   padding: 8px 16px;
   background-color: var(--accent-color);
@@ -333,6 +334,11 @@ button:not(.link) {
 #save,
 form button {
   font-weight: 500;
+}
+
+.close {
+  display: flex;
+  align-items: center;
 }
 
 /*Menu button*/
@@ -401,6 +407,26 @@ form button {
   gap: 48px;
 }
 
+/*Info messages*/
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 3px solid var(--secondary-color-800);
+  padding: 1rem;
+}
+
+.info p {
+  gap: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.success {
+  background-color: var(--low-priority);
+}
+
 /* Media queries*/
 @media screen and (min-width: 50rem) {
   .navigation {
@@ -424,7 +450,7 @@ form button {
 }
 
 @media screen and (prefers-reduced-motion:no-preference) {
-  button:not(.link) {
+  button:not(.link, .close) {
     transition: box-shadow ease 0.5s;
   }
 }

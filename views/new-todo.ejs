@@ -11,40 +11,42 @@
             <%= title %>
           </h1>
         </header>
-        <% if (categories.length>0) { %>
-          <form method="post" action="/todo/new">
-            <div>
-              <label for="title">Title</label>
-              <input type="text" id="title" name="title">
-            </div>
-            <div>
-              <label for="due-date">Due date</label>
-              <input type="date" id="due-date" name="due_date">
-            </div>
-            <div>
-              <label for="priority">Priority</label>
-              <select id="priority" name="priority">
-                <option value="None">None</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-            <div>
-              <label for="category">Category</label>
-              <select id="category" name="category">
-                <% categories.forEach(category=>{ %>
-                  <option value="<%= category.cat_id %>">
-                    <%= category.name %>
-                  </option>
-                  <% }) %>
-              </select>
-            </div>
-            <button type="submit">Create Todo</button>
-          </form>
-          <% } else {%>
-            <p>You need to <a class="underline" href="/category/new">add a new category</a> before creating a todo!</p>
-            <% } %>
+        <%- include("./partials/message.ejs") %>
+          <% if (categories.length>0) { %>
+            <form method="post" action="/todo/new">
+              <div>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title">
+              </div>
+              <div>
+                <label for="due-date">Due date</label>
+                <input type="date" id="due-date" name="due_date">
+              </div>
+              <div>
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority">
+                  <option value="None">None</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div>
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                  <% categories.forEach(category=>{ %>
+                    <option value="<%= category.cat_id %>">
+                      <%= category.name %>
+                    </option>
+                    <% }) %>
+                </select>
+              </div>
+              <button type="submit">Create Todo</button>
+            </form>
+            <% } else {%>
+              <p>You need to <a class="underline" href="/category/new">add a new category</a> before creating a todo!
+              </p>
+              <% } %>
       </main>
       <script src="/javascripts/navigation.js"></script>
   </body>

@@ -11,25 +11,15 @@
             <%= title %>
           </h1>
         </header>
-        <form method="post" action="/category/new">
-          <div>
-            <label for="new-category">New category</label>
-            <input type="text" id="new-category" name="name">
-          </div>
-          <button type="submit" id="submit">Create category</button>
-        </form>
+        <%- include("./partials/message.ejs") %>
+          <form method="post" action="/category/new">
+            <div>
+              <label for="new-category">New category</label>
+              <input type="text" id="new-category" name="name">
+            </div>
+            <button type="submit" id="submit">Create category</button>
+          </form>
       </main>
-      <script>
-        const form = document.querySelector("form");
-        const input = document.querySelector("input")
-        form.addEventListener("submit", () => {
-          const h1 = document.querySelector("h1");
-          const message = document.createElement("p");
-          message.textContent = "New category added!";
-          h1.after(message);
-          setTimeout(() => { message.remove() }, 2000)
-        });
-      </script>
       <script src="/javascripts/navigation.js"></script>
   </body>
 

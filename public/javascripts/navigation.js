@@ -14,3 +14,9 @@ menuBtn.addEventListener("click", () => {
     }
 });
 
+if (document.querySelector(".info")) {
+    const close = document.querySelector(".close");
+    const message = document.querySelector(".info")
+
+    close.addEventListener("click", () => message.remove());
+}
