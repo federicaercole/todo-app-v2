@@ -1,7 +1,6 @@
 const categoryUrl = document.querySelector("main").dataset.id;
 const h1 = document.querySelector("h1");
 const categoryName = h1.innerText;
-const headerDiv = document.querySelector("header>div");
 
 const deleteBtn = document.querySelector("#delete");
 deleteBtn.addEventListener("click", openModalCategory);
@@ -32,11 +31,12 @@ async function deleteCategory() {
 }
 
 function createRenameDOM() {
-    const deleteBtn = document.querySelector("#delete");
-    const renameBtn = document.querySelector("#rename");
-    const h1 = document.querySelector("h1");
+    const form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", `/category/${categoryUrl}/edit?_method=PUT`);
     const input = document.createElement("input");
     input.setAttribute("type", "text");
+    input.setAttribute("name", "name");
     input.value = categoryName;
     const cancelBtn = document.createElement("button");
     cancelBtn.textContent = "Cancel";
@@ -46,17 +46,18 @@ function createRenameDOM() {
     saveBtn.textContent = "Save";
     saveBtn.id = "save";
     saveBtn.setAttribute("type", "submit");
-    headerDiv.setAttribute("class", "rename");
+    const headerDiv = document.querySelector("header>div");
+    headerDiv.replaceWith(form);
 
-    h1.replaceWith(input);
-    renameBtn.replaceWith(cancelBtn);
-    deleteBtn.replaceWith(saveBtn);
+    form.append(input);
+    form.append(cancelBtn);
+    form.append(saveBtn);
 
     cancelBtn.addEventListener("click", resetDOM);
-    saveBtn.addEventListener("click", saveChanges);
 }
 
 function resetDOM() {
+    const div = document.createElement("div");
     const renameBtn = document.createElement("button");
     renameBtn.textContent = "Rename";
     renameBtn.setAttribute("type", "button");
@@ -67,27 +68,15 @@ function resetDOM() {
     deleteBtn.setAttribute("type", "button");
     deleteBtn.setAttribute("id", "delete");
     deleteBtn.classList.add("link");
-    const input = document.querySelector("input[type='text']");
-    const cancelBtn = document.querySelector("#cancel-cat");
-    const saveBtn = document.querySelector("#save");
+    const form = document.querySelector("form");
     const h1 = document.createElement("h1");
     h1.textContent = categoryName;
-    headerDiv.removeAttribute("class");
 
-    input.replaceWith(h1);
-    cancelBtn.replaceWith(renameBtn);
-    saveBtn.replaceWith(deleteBtn);
+    form.replaceWith(div);
+    div.append(h1);
+    div.append(renameBtn);
+    div.append(deleteBtn);
 
     renameBtn.addEventListener("click", createRenameDOM);
-    deleteBtn.addEventListener("click", deleteCategory);
-}
-
-async function saveChanges() {
-    const inputValue = document.querySelector("input[type='text']").value;
-    const response = await fetch(`/category/${categoryUrl}/edit`, {
-        method: "PUT", headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ name: inputValue })
-    });
-    const data = await response.json();
-    window.location.href = data.redirect;
+    deleteBtn.addEventListener("click", openModalCategory);
 }
