@@ -1,6 +1,11 @@
 const categoryUrl = document.querySelector("main").dataset.id;
 const h1 = document.querySelector("h1");
 const categoryName = h1.innerText;
+const errorIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+focusable="false">
+<path fill="currentColor"
+    d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8z" />
+</svg>`
 
 const deleteBtn = document.querySelector("#delete");
 deleteBtn.addEventListener("click", openModalCategory);
@@ -32,28 +37,37 @@ async function deleteCategory() {
 
 function createRenameDOM() {
     const form = document.createElement("form");
+    form.noValidate = true;
     form.setAttribute("method", "post");
     form.setAttribute("action", `/category/${categoryUrl}/edit?_method=PUT`);
     const input = document.createElement("input");
     input.setAttribute("type", "text");
     input.setAttribute("name", "name");
+    input.required = true;
+    input.setAttribute("minlength", "3");
+    input.setAttribute("maxlength", "30");
+    input.setAttribute("aria-invalid", "false");
+    input.setAttribute("aria-describedby", "cat-error");
     input.value = categoryName;
     const cancelBtn = document.createElement("button");
     cancelBtn.textContent = "Cancel";
-    cancelBtn.id = "cancel-cat";
     cancelBtn.setAttribute("type", "button");
     const saveBtn = document.createElement("button");
     saveBtn.textContent = "Save";
-    saveBtn.id = "save";
     saveBtn.setAttribute("type", "submit");
     const headerDiv = document.querySelector("header>div");
     headerDiv.replaceWith(form);
+    const error = document.createElement("p");
+    error.classList.add("info", "error", "hidden");
+    error.id = "cat-error";
 
     form.append(input);
     form.append(cancelBtn);
     form.append(saveBtn);
+    form.before(error);
 
     cancelBtn.addEventListener("click", resetDOM);
+    form.addEventListener("submit", (event) => formValidation(event));
 }
 
 function resetDOM() {
@@ -61,22 +75,34 @@ function resetDOM() {
     const renameBtn = document.createElement("button");
     renameBtn.textContent = "Rename";
     renameBtn.setAttribute("type", "button");
-    renameBtn.setAttribute("id", "rename");
     renameBtn.classList.add("link");
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.setAttribute("type", "button");
-    deleteBtn.setAttribute("id", "delete");
     deleteBtn.classList.add("link");
     const form = document.querySelector("form");
     const h1 = document.createElement("h1");
     h1.textContent = categoryName;
+    const error = document.querySelector(".info.error");
 
     form.replaceWith(div);
     div.append(h1);
     div.append(renameBtn);
     div.append(deleteBtn);
+    error.remove();
 
     renameBtn.addEventListener("click", createRenameDOM);
     deleteBtn.addEventListener("click", openModalCategory);
+}
+
+function formValidation(event) {
+    const input = document.querySelector("input");
+    const error = document.querySelector(".info.error.hidden");
+
+    if (!input.validity.valid) {
+        event.preventDefault();
+        input.setAttribute("aria-invalid", "true");
+        error.classList.remove("hidden");
+        error.innerHTML = `${errorIcon} Category name must be between 3 and 30 characters`;
+    }
 }

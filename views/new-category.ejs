@@ -4,23 +4,29 @@
 <%- include("./partials/head.ejs") %>
 
   <body>
-    <%- include("./partials/menu.ejs") %>
-      <main>
-        <header>
-          <h1>
-            <%= title %>
-          </h1>
-        </header>
-        <%- include("./partials/message.ejs") %>
-          <form method="post" action="/category/new">
-            <div>
-              <label for="new-category">New category</label>
-              <input type="text" id="new-category" name="name">
-            </div>
-            <button type="submit" id="submit">Create category</button>
-          </form>
-      </main>
+    <%- include("./partials/message.ejs") %>
+      <div class="page">
+        <%- include("./partials/menu.ejs") %>
+          <main>
+            <header>
+              <h1>
+                <%= title %>
+              </h1>
+            </header>
+
+            <form method="post" action="/category/new" novalidate>
+              <div>
+                <p class="info error hidden" id="cat-err"></p>
+                <label for="new-category">New category</label>
+                <input type="text" id="new-category" name="name" aria-describedby="cat-err" aria-invalid="false"
+                  pattern="/p{L}/u" minlength="3" maxlength="30" required>
+              </div>
+              <button type="submit" id="submit">Create category</button>
+            </form>
+          </main>
+      </div>
       <script src="/javascripts/navigation.js"></script>
+      <script src="/javascripts/category-validation.js"></script>
   </body>
 
 </html>

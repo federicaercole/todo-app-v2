@@ -4,23 +4,25 @@
 <%- include("./partials/head.ejs") %>
 
   <body>
-    <%- include("./partials/menu.ejs") %>
-      <main data-id="<%= category.url %>">
-        <header>
-          <div>
-            <h1>
-              <%= title %>
-            </h1>
-            <div>
-              <button type="button" id="rename" class="link">Rename</button>
-              <button type="button" id="delete" class="link">Delete</button>
-            </div>
-          </div>
-          <%- include("./partials/filters.ejs") %>
-        </header>
-        <%- include("./partials/message.ejs") %>
-          <%- include("./partials/todos.ejs") %>
-      </main>
+    <%- include("./partials/message.ejs") %>
+      <div class="page">
+        <%- include("./partials/menu.ejs") %>
+          <main data-id="<%= category.url %>">
+            <header>
+              <div>
+                <h1>
+                  <%= title %>
+                </h1>
+                <div>
+                  <button type="button" id="rename" class="link">Rename</button>
+                  <button type="button" id="delete" class="link">Delete</button>
+                </div>
+              </div>
+              <%- include("./partials/filters.ejs") %>
+            </header>
+            <%- include("./partials/todos.ejs") %>
+          </main>
+      </div>
       <%- include("./partials/modal.ejs") %>
         <script src="/javascripts/navigation.js"></script>
         <script src="/javascripts/script.js"></script>

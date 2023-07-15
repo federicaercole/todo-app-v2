@@ -12,6 +12,7 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const todoRouter = require('./routes/todo');
 const categoryRouter = require('./routes/category');
+const utilityFunction = require('./controllers/utilityFunctions');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(session({
 }));
 app.use(flash());
 
+app.use(utilityFunction.showMessage);
 app.use('/', indexRouter);
 app.use('/todo', todoRouter);
 app.use('/category', categoryRouter);

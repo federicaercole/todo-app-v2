@@ -41,20 +41,23 @@ a {
 body {
   font-family: 'Work Sans', sans-serif;
   font-size: var(--fs-100);
-  display: flex;
-  flex-wrap: wrap;
   min-height: 100vh;
   color: var(--secondary-color-900);
   background-color: var(--background-color);
 }
 
-body>.navigation {
+.page {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.page>.navigation {
   flex-basis: clamp(15rem, 25%, 30rem);
   flex-grow: 1;
   padding-inline-start: clamp(1rem, 3%, 6rem);
 }
 
-body>main {
+.page>main {
   flex-basis: 0;
   flex-grow: 999;
 }
@@ -71,6 +74,7 @@ body>main {
 svg {
   inline-size: max(24px, 1.5em);
   block-size: max(24px, 1.5em);
+  flex-shrink: 0;
 }
 
 /*Typography*/
@@ -90,14 +94,13 @@ h4 {
 /*Nav*/
 .navigation {
   display: none;
-  margin-block-start: 3rem;
   position: absolute;
-  inset: 0;
   z-index: 1;
   background-color: var(--background-color);
   height: fit-content;
+  width: 100%;
   min-height: 100vh;
-  padding-block-end: 2rem;
+  padding: 3rem 0 2rem 0;
 }
 
 nav ul:first-of-type {
@@ -157,7 +160,8 @@ section article {
   text-decoration: line-through;
 }
 
-.high {
+.high,
+.error {
   background-color: var(--high-priority);
 }
 
@@ -285,7 +289,7 @@ main>form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  max-width: max-content;
+  width: min(700px, 100%);
 }
 
 label {
@@ -351,7 +355,6 @@ form button {
   align-items: center;
   padding: 1.5rem;
   position: absolute;
-  top: 0;
   right: 0;
   margin: clamp(1rem, 6%, 3rem);
   z-index: 2;
@@ -372,7 +375,8 @@ form button {
 
 /*Modal*/
 
-.hidden {
+.hidden,
+.info.hidden {
   display: none;
 }
 
@@ -416,14 +420,25 @@ form button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 3px solid var(--secondary-color-800);
+  border-bottom: 3px solid var(--secondary-color-800);
   padding: 1rem;
 }
 
-.info p {
+.info>*,
+p.info {
   gap: 8px;
   display: flex;
   align-items: center;
+}
+
+.info li+li {
+  margin-block-start: 0.5rem;
+}
+
+header .info,
+form .info {
+  border: 3px solid var(--secondary-color-800);
+  justify-content: flex-start;
 }
 
 /* Media queries*/
