@@ -5,9 +5,10 @@
 
   <body>
     <%- include("./partials/message.ejs") %>
+      <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
       <div class="page">
         <%- include("./partials/menu.ejs") %>
-          <main>
+          <main id="main">
             <header>
               <h1>
                 <%= title %>
@@ -18,13 +19,13 @@
               - dateCopy.getTimezoneOffset()*60*1000); return dateCopy.toISOString().split('T')[0]; } %>
               <form method="post" action="/todo/<%= todo.todo_id %>/edit?_method=PUT" novalidate>
                 <div>
-                  <p class="info error hidden" id="title-err"></p>
+                  <p class="info error hidden" id="title-err" aria-live="polite"></p>
                   <label for="title">Title</label>
                   <input type="text" id="title" name="title" value="<%= todo.title %>" minlength="1" maxlength="40"
                     aria-describedby="title-err" aria-invalid="false" required>
                 </div>
                 <div>
-                  <p class="info error hidden" id="date-err"></p>
+                  <p class="info error hidden" id="date-err" aria-live="polite"></p>
                   <label for="due-date">Due date</label>
                   <input type="date" id="due-date" name="due_date"
                     value="<%= adjustDateToLocalTimeZone(todo.due_date) %>" aria-describedby="date-err"

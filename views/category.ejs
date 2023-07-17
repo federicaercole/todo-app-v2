@@ -5,9 +5,10 @@
 
   <body>
     <%- include("./partials/message.ejs") %>
+      <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
       <div class="page">
         <%- include("./partials/menu.ejs") %>
-          <main data-id="<%= category.url %>">
+          <main data-id="<%= category.url %>" id="main">
             <header>
               <div>
                 <h1>

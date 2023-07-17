@@ -80,10 +80,10 @@ const categoryNewPost = [
             const categoryUrl = createCategoryUrl(name);
             const categoryUrlExists = await getCategoryByUrl(categoryUrl);
             if (categoryExists) {
-                req.flash("warning", "The category already exists. Please use another name.")
+                req.flash("warning", "Warning: The category already exists. Please use another name.")
                 res.redirect(categoryExists.url);
             } else if (categoryUrlExists) {
-                req.flash("warning", "The url slug is the same of another category. Please use another name without special characters.")
+                req.flash("warning", "Warning: The url slug is the same of another category. Please use another name without special characters.")
                 res.redirect("/category/new");
             } else {
                 await createNewCategory(name);
@@ -99,7 +99,7 @@ const categoryDelete = ash(async (req, res) => {
     const category = await getCategoryByUrl(url);
     await sql.query("DELETE FROM todos WHERE category = ?", category.cat_id);
     await sql.query("DELETE FROM categories WHERE url = ?", url);
-    req.flash("success", "Category deleted");
+    req.flash("success", "The category was deleted");
     res.json({ redirect: '/' });
 });
 
@@ -118,15 +118,15 @@ const categoryPut = [
             const categoryUrl = createCategoryUrl(name);
             const categoryUrlExists = await getCategoryByUrl(categoryUrl);
             if (categoryExists) {
-                req.flash("warning", "The category already exists. Please use another name.")
+                req.flash("warning", "Warning: The category already exists. Please use another name.")
                 res.redirect(`/category/${url}`);
             } else if (categoryUrlExists) {
-                req.flash("warning", "The url slug is the same of another category. Please use another name without special characters.")
+                req.flash("warning", "Warning: The url slug is the same of another category. Please use another name without special characters.")
                 res.redirect(`/category/${url}`);
             } else {
                 await sql.query("UPDATE categories SET name = ? WHERE url = ?", [name, url]);
                 await sql.query("UPDATE categories SET url = ? WHERE name = ?", [categoryUrl, name]);
-                req.flash("success", "Name category updated.")
+                req.flash("success", "Category name was updated.")
                 res.redirect(`/category/${categoryUrl}`);
             }
         }

@@ -18,7 +18,7 @@ async function getSingleTodo(id) {
     return result[0];
 }
 
-const formValidation = [body("title", "Todo name must be between 1 and 40 characters").trim().isLength({ min: 1, max: 40 }).escape(),
+const formValidation = [body("title", "Todo title must be between 1 and 40 characters").trim().isLength({ min: 1, max: 40 }).escape(),
 body("due_date", "You must insert a valid due date").isISO8601().toDate(),
 body("priority", "You must choose a priority level").notEmpty(),
 body("category", "You must choose a category").notEmpty(),
@@ -69,7 +69,7 @@ const todoEditPut = [
         } else {
             const { title, due_date, priority, category } = req.body;
             await updateTodo(title, due_date, priority, category, id);
-            req.flash("success", "Todo edited");
+            req.flash("success", "The todo was edited");
             res.redirect(`/todo/${id}/edit`);
         }
     })];
@@ -77,7 +77,7 @@ const todoEditPut = [
 const todoDelete = ash(async (req, res) => {
     const { id, url } = req.body;
     await sql.query("DELETE FROM todos WHERE todo_id = ?", id);
-    req.flash("success", "Todo deleted");
+    req.flash("success", "The todo was deleted");
     res.json({ redirect: url });
 });
 

@@ -71,6 +71,7 @@ function createRenameDOM() {
     headerDiv.replaceWith(form);
     const error = document.createElement("p");
     error.classList.add("info", "error", "hidden");
+    error.setAttribute("aria-live", "polite");
     error.id = "cat-error";
 
     form.append(input);

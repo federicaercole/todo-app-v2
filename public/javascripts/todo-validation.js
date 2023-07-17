@@ -16,12 +16,19 @@ form.addEventListener("submit", (event) => {
         if (!inputTitle.validity.valid) {
             inputTitle.setAttribute("aria-invalid", "true");
             errorTitle.classList.remove("hidden");
-            errorTitle.innerHTML = `${errorIcon} Todo name must be between 1 and 40 characters`;
+            errorTitle.innerHTML = `${errorIcon} Todo title must be between 1 and 40 characters`;
+        } else {
+            inputTitle.setAttribute("aria-invalid", "false");
+            errorTitle.classList.add("hidden");
         }
+
         if (!inputDate.validity.valid) {
             inputDate.setAttribute("aria-invalid", "true");
             errorDate.classList.remove("hidden");
             errorDate.innerHTML = `${errorIcon} You must insert a valid due date`;
+        } else {
+            inputDate.setAttribute("aria-invalid", "false");
+            errorDate.classList.add("hidden");
         }
     }
 });

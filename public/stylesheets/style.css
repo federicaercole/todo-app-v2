@@ -35,7 +35,7 @@ a {
   --accent-color-400: rgb(81, 139, 221);
   --secondary-color-400: hsl(215, 14%, 64%);
   --secondary-color-800: hsl(213, 14%, 25%);
-  --secondary-color-900: hsl(213, 16%, 13%);
+  --secondary-color-900: hsl(213, 16%, 3%);
 }
 
 body {
@@ -103,8 +103,12 @@ h4 {
   padding: 3rem 0 2rem 0;
 }
 
-nav ul:first-of-type {
-  margin-block: 3rem;
+nav li:first-of-type {
+  margin-block-start: 3rem;
+}
+
+nav li:nth-of-type(2) {
+  margin-block-end: 3rem;
 }
 
 nav li+li {
