@@ -22,11 +22,22 @@ function openModalCategory() {
     modal.classList.remove("hidden");
     const cancelBtn = document.querySelector("#cancel");
     const confirmBtn = document.querySelector("#confirm");
+    cancelBtn.focus();
 
-    cancelBtn.addEventListener("click", () => {
-        modal.classList.add("hidden");
-    });
+    cancelBtn.addEventListener("click", closeModalCategory);
     confirmBtn.addEventListener("click", deleteCategory);
+
+    modal.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            closeModalCategory();
+        }
+    });
+}
+
+function closeModalCategory() {
+    modal.classList.add("hidden");
+    const deleteBtn = document.querySelector("#delete");
+    deleteBtn.focus();
 }
 
 async function deleteCategory() {
@@ -49,6 +60,7 @@ function createRenameDOM() {
     input.setAttribute("aria-invalid", "false");
     input.setAttribute("aria-describedby", "cat-error");
     input.value = categoryName;
+    input.setAttribute("aria-label", "New category name");
     const cancelBtn = document.createElement("button");
     cancelBtn.textContent = "Cancel";
     cancelBtn.setAttribute("type", "button");
@@ -65,8 +77,14 @@ function createRenameDOM() {
     form.append(cancelBtn);
     form.append(saveBtn);
     form.before(error);
+    input.focus();
 
     cancelBtn.addEventListener("click", resetDOM);
+    form.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            resetDOM();
+        }
+    });
     form.addEventListener("submit", (event) => formValidation(event));
 }
 
@@ -76,10 +94,12 @@ function resetDOM() {
     renameBtn.textContent = "Rename";
     renameBtn.setAttribute("type", "button");
     renameBtn.classList.add("link");
+    renameBtn.id = "rename";
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.setAttribute("type", "button");
     deleteBtn.classList.add("link");
+    deleteBtn.id = "delete";
     const form = document.querySelector("form");
     const h1 = document.createElement("h1");
     h1.textContent = categoryName;
@@ -89,6 +109,7 @@ function resetDOM() {
     div.append(h1);
     div.append(renameBtn);
     div.append(deleteBtn);
+    renameBtn.focus();
     error.remove();
 
     renameBtn.addEventListener("click", createRenameDOM);

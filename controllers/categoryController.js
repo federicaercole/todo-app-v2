@@ -126,6 +126,7 @@ const categoryPut = [
             } else {
                 await sql.query("UPDATE categories SET name = ? WHERE url = ?", [name, url]);
                 await sql.query("UPDATE categories SET url = ? WHERE name = ?", [categoryUrl, name]);
+                req.flash("success", "Name category updated.")
                 res.redirect(`/category/${categoryUrl}`);
             }
         }

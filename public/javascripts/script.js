@@ -22,15 +22,26 @@ function openModalTodo(event) {
     const h2 = modal.querySelector("h2");
     const p = modal.querySelector("p");
     h2.textContent = "Delete this todo?"
-    p.textContent = "Are you sure you want to delete this todo?"
+    p.textContent = "It will be gone forever!"
     modal.classList.remove("hidden");
     const cancelBtn = document.querySelector("#cancel");
     const confirmBtn = document.querySelector("#confirm");
 
-    cancelBtn.addEventListener("click", () => {
-        modal.classList.add("hidden");
-    });
+    cancelBtn.focus();
+    cancelBtn.addEventListener("click", () => closeModal(id));
     confirmBtn.addEventListener("click", () => deleteItem(id));
+
+    modal.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            closeModal(id);
+        }
+    });
+}
+
+function closeModal(id) {
+    modal.classList.add("hidden");
+    const deleteBtn = document.querySelector(`.delete-todo[data-id='${id}']`);
+    deleteBtn.focus();
 }
 
 async function deleteItem(id) {
@@ -41,6 +52,28 @@ async function deleteItem(id) {
     const data = await response.json();
     window.location.href = data.redirect;
 }
+
+const modal = document.querySelector(".modal");
+
+modal.addEventListener("keydown", event => {
+    const firstFocusableElement = modal.querySelectorAll("button")[0];
+    const focusableContent = modal.querySelectorAll("button");
+    const lastFocusableElement = focusableContent[focusableContent.length - 1];
+
+    if (event.key === "Tab" && !event.shiftKey) {
+        if (document.activeElement === lastFocusableElement) {
+            firstFocusableElement.focus();
+            event.preventDefault();
+        }
+    }
+    else if (event.key === "Tab" && event.shiftKey) {
+        if (document.activeElement === firstFocusableElement) {
+            lastFocusableElement.focus();
+            event.preventDefault();
+        }
+    }
+    else return;
+});
 
 const sortFilter = document.querySelector("#sort");
 

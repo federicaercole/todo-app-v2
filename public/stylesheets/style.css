@@ -283,13 +283,29 @@ button:not(.link, .close):focus {
   text-decoration: underline;
 }
 
+.skip-link:focus {
+  display: block;
+  background-color: var(--background-color);
+  color: var(--secondary-color-900);
+  text-decoration: underline;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  height: auto;
+  width: max-content;
+  padding: 16px;
+  z-index: 20;
+}
+
 /*Forms*/
 
 main>form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: min(700px, 100%);
+  width: min(500px, 100%);
 }
 
 label {
@@ -312,7 +328,7 @@ select {
   font-family: inherit;
   font-size: var(--fs-100);
   padding: 4px 12px;
-  max-width: 100%;
+  width: min(500px, 100%);
 }
 
 form select {
@@ -336,11 +352,6 @@ button:not(.link, .close) {
   padding: 8px 16px;
   background-color: var(--accent-color);
   box-shadow: 4px 4px 0px var(--secondary-color-800);
-}
-
-#save,
-form button {
-  font-weight: 500;
 }
 
 .close {
