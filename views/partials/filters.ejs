@@ -1,0 +1,48 @@
+<button type="button" id="filter" aria-haspopup="true" aria-expanded="false" aria-controls="filter-menu">Filters <svg
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="m7 10l5 5l5-5z" />
+    </svg></button>
+<form method="get" class="filter" id="filter-menu">
+    <div>
+        <label for="sort">Order</label>
+        <select id="sort" name="sort">
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+        </select>
+    </div>
+    <fieldset>
+        <legend>Priority</legend>
+        <div>
+            <div>
+                <input type="checkbox" id="none" name="priority[]" value="none">
+                <label for="none">None</label>
+            </div>
+            <div>
+                <input type="checkbox" id="low" name="priority[]" value="low">
+                <label for="low">Low</label>
+            </div>
+            <div>
+                <input type="checkbox" id="medium" name="priority[]" value="medium">
+                <label for="medium">Medium</label>
+            </div>
+            <div>
+                <input type="checkbox" id="high" name="priority[]" value="high">
+                <label for="high">High</label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>State</legend>
+        <div>
+            <div>
+                <input type="checkbox" id="not-done" name="done[]" value="0">
+                <label for="not-done">Not done</label>
+            </div>
+            <div>
+                <input type="checkbox" id="done" name="done[]" value="1">
+                <label for="done">Done</label>
+            </div>
+        </div>
+    </fieldset>
+    <button type="submit">Filter todos</button>
+</form>

@@ -4,6 +4,7 @@
 * {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
 ul {
@@ -33,6 +34,7 @@ a {
   --background-color: #f1f5f9;
   --accent-color: rgb(156, 196, 251);
   --accent-color-400: rgb(81, 139, 221);
+  --accent-color-800: hsl(215, 67%, 39%);
   --secondary-color-400: hsl(215, 14%, 64%);
   --secondary-color-800: hsl(213, 14%, 25%);
   --secondary-color-900: hsl(213, 16%, 3%);
@@ -95,11 +97,11 @@ h4 {
 .navigation {
   display: none;
   position: absolute;
-  z-index: 1;
-  background-color: var(--background-color);
+  z-index: 10;
   height: fit-content;
   width: 100%;
   min-height: 100vh;
+  background-color: var(--background-color);
   padding: 3rem 0 2rem 0;
 }
 
@@ -129,7 +131,7 @@ main {
 main header {
   padding-block-end: 32px;
   border-bottom: 2px dashed var(--secondary-color-400);
-  margin-block-start: 4rem;
+  margin-block-start: 5rem;
 }
 
 header>*+* {
@@ -211,7 +213,7 @@ section input[type="checkbox"] {
   flex-shrink: 0;
 }
 
-input[type="checkbox"]::before {
+section input[type="checkbox"]::before {
   content: "";
   width: 1.5em;
   height: 1.5em;
@@ -221,7 +223,7 @@ input[type="checkbox"]::before {
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
-input[type="checkbox"]:checked::before {
+section input[type="checkbox"]:checked::before {
   transform: scale(1);
 }
 
@@ -270,14 +272,15 @@ a[aria-current] {
 }
 
 *:focus,
-.close:hover {
+.close:hover,
+fieldset [type="checkbox"]:focus+label {
   outline: 3px solid var(--secondary-color-800);
   outline-offset: 3px;
 }
 
 button:not(.link, .close):hover,
 button:not(.link, .close):focus {
-  background-color: var(--accent-color-400);
+  background-color: var(--accent-color-800);
   color: var(--background-color);
   text-decoration: none;
   box-shadow: 0px 0px 0px var(--secondary-color-800);
@@ -333,10 +336,62 @@ select {
   font-size: var(--fs-100);
   padding: 4px 12px;
   width: min(500px, 100%);
+  background-color: #FFF;
 }
 
-form select {
-  background-color: #FFF;
+fieldset {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 16px;
+  border: none;
+  flex-basis: 100%;
+}
+
+fieldset:last-of-type {
+  margin-inline-end: auto;
+}
+
+legend {
+  display: contents;
+  font-weight: 500;
+}
+
+fieldset input[type="checkbox"] {
+  appearance: none;
+  opacity: 0;
+}
+
+fieldset label {
+  padding: 4px 16px;
+  background-color: var(--accent-color);
+  font-weight: 400;
+  border: 3px solid var(--secondary-color-800);
+}
+
+fieldset div>div {
+  gap: 0;
+}
+
+fieldset input[type="checkbox"]:checked+label {
+  background-color: var(--accent-color-800);
+  color: var(--background-color);
+  font-weight: 500;
+}
+
+.filter {
+  display: none;
+  position: absolute;
+  background-color: var(--background-color);
+  padding: 2rem 1rem;
+  margin-inline-end: clamp(1rem, 6%, 3rem);
+  z-index: 1;
+  max-width: min(500px, 100%);
+  border: 3px solid var(--secondary-color-800);
+}
+
+.filter>div {
+  gap: 16px;
 }
 
 /*Buttons*/
@@ -358,9 +413,14 @@ button:not(.link, .close) {
   box-shadow: 4px 4px 0px var(--secondary-color-800);
 }
 
-.close {
+#filter {
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.filter button {
+  flex-basis: 100%;
 }
 
 /*Menu button*/
@@ -372,12 +432,14 @@ button:not(.link, .close) {
   position: absolute;
   right: 0;
   margin: clamp(1rem, 6%, 3rem);
-  z-index: 2;
+  z-index: 11;
   box-shadow: none;
   background-image: url("../images/open-menu.svg");
   background-repeat: no-repeat;
   background-size: 32px auto;
   background-position: 50%;
+  background-color: transparent;
+  border: none;
 }
 
 #menu[aria-expanded="true"] {
@@ -386,6 +448,10 @@ button:not(.link, .close) {
 
 .show-menu {
   display: block;
+}
+
+.filter.show-menu {
+  display: flex;
 }
 
 /*Modal*/

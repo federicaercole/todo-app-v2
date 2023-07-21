@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const todoController = require('../controllers/todoController');
-const utilityFunctions = require('../controllers/utilityFunctions');
 
 //New todo page
 router.get('/new', todoController.todoNewGet);

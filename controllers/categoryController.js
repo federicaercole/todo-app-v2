@@ -3,17 +3,17 @@ const utilityFunctions = require('./utilityFunctions.js');
 const ash = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
-async function getTodosByCategory(sort, category) {
-    let sortQuery = "SELECT todo_id, title, due_date, priority, done, name AS category FROM todos JOIN categories ON todos.category = categories.cat_id WHERE cat_id = ?";
-    sort === "asc" ? sortQuery += " ORDER BY due_date ASC" : sortQuery += " ORDER BY due_date DESC"
-    const [rows] = await sql.query(sortQuery, category);
+async function getTodosByCategory(filter, category) {
+    let query = "SELECT todo_id, title, due_date, priority, done, name AS category FROM todos JOIN categories ON todos.category = categories.cat_id WHERE cat_id = ?";
+    query += filter;
+    const [rows] = await sql.query(query, category);
     return rows;
 }
 
-async function getTodoDatesByCategory(sort, category) {
-    let sortQuery = "SELECT DISTINCT due_date FROM todos JOIN categories ON todos.category = categories.cat_id WHERE cat_id = ?";
-    sort === "asc" ? sortQuery += " ORDER BY due_date ASC" : sortQuery += " ORDER BY due_date DESC";
-    const [rows] = await sql.query(sortQuery, category);
+async function getTodosDatesByCategory(filter, category) {
+    let query = "SELECT DISTINCT due_date FROM todos JOIN categories ON todos.category = categories.cat_id WHERE cat_id = ?";
+    query += filter;
+    const [rows] = await sql.query(query, category);
     const dates = rows.map(row => row.due_date);
     return dates;
 }
@@ -53,11 +53,11 @@ const todosByCategoryGet = ash(async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-    const sort = req.query.sort;
     const categories = await utilityFunctions.getAllCategories();
     const id = category.cat_id;
-    const dates = await getTodoDatesByCategory(sort, id);
-    const todos = await getTodosByCategory(sort, id);
+    const filter = utilityFunctions.getTodosFilter(req.query);
+    const dates = await getTodosDatesByCategory(filter, id);
+    const todos = await getTodosByCategory(filter, id);
     res.render('category', { title: `${category.name}`, category, categories, todos, dates });
 });
 
