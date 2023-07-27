@@ -1,5 +1,4 @@
 const sql = require('../models/dbConfig.js');
-const utilityFunctions = require('./utilityFunctions.js');
 const ash = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
@@ -25,8 +24,7 @@ body("category", "You must choose a category").notEmpty(),
 ]
 
 const todoNewGet = ash(async (req, res) => {
-    const categories = await utilityFunctions.getAllCategories();
-    res.render('new-todo', { title: "New todo", categories });
+    res.render('new-todo', { title: "New todo", categories: res.locals.categories });
 });
 
 const todoNewPost = [
@@ -35,26 +33,21 @@ const todoNewPost = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             req.flash("error", errors.array());
-            res.redirect(`/todo/new`);
-            return;
-        } else {
-            const { title, due_date, priority, category } = req.body;
-            await createTodo(title, due_date, priority, category);
-            req.flash("success", "New todo created");
-            res.redirect('/');
+            return res.redirect(`/todo/new`);
         }
+        const { title, due_date, priority, category } = req.body;
+        await createTodo(title, due_date, priority, category);
+        req.flash("success", "New todo created");
+        res.redirect('/');
     })];
 
 const todoEditGet = ash(async (req, res, next) => {
     const id = req.params.id;
     const todo = await getSingleTodo(id);
     if (!todo) {
-        const err = new Error("Not found");
-        err.status = 404;
-        return next(err);
+        return next();
     }
-    const categories = await utilityFunctions.getAllCategories();
-    res.render('edit-todo', { title: "Edit todo", categories, todo })
+    res.render('edit-todo', { title: "Edit todo", categories: res.locals.categories, todo })
 });
 
 const todoEditPut = [
@@ -64,14 +57,12 @@ const todoEditPut = [
         const id = req.params.id;
         if (!errors.isEmpty()) {
             req.flash("error", errors.array());
-            res.redirect(`/todo/${id}/edit`);
-            return;
-        } else {
-            const { title, due_date, priority, category } = req.body;
-            await updateTodo(title, due_date, priority, category, id);
-            req.flash("success", "The todo was edited");
-            res.redirect(`/todo/${id}/edit`);
+            return res.redirect(`/todo/${id}`);
         }
+        const { title, due_date, priority, category } = req.body;
+        await updateTodo(title, due_date, priority, category, id);
+        req.flash("success", "The todo was edited");
+        res.redirect(`/todo/${id}`);
     })];
 
 const todoDelete = ash(async (req, res) => {

@@ -34,6 +34,7 @@ app.use(session({
 app.use(flash());
 
 app.use(utilityFunction.showMessage);
+app.use(utilityFunction.getAllCategories);
 app.use('/', indexRouter);
 app.use('/todo', todoRouter);
 app.use('/category', categoryRouter);
@@ -51,7 +52,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', { title: "Error 404 - Page Not Found" });
 });
 
 module.exports = app;

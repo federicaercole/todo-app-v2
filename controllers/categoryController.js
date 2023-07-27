@@ -44,26 +44,33 @@ async function createNewCategory(name) {
 }
 
 const formValidation = body("name", "Category name must be between 3 and 30 characters").trim().isLength({ min: 3, max: 30 })
-    .matches(/\p{L}/u).withMessage("Category name must contain at least one letter").escape();
+    .matches(/\p{L}/u).withMessage("Category name must contain at least one letter").escape().custom(async value => {
+        const categoryExists = await getCategoryByName(value);
+        if (categoryExists) {
+            throw new Error("The category already exists. Please use another name.");
+        }
+    }).custom(async value => {
+        const categoryUrl = createCategoryUrl(value);
+        const categoryUrlExists = await getCategoryByUrl(categoryUrl);
+        if (categoryUrlExists) {
+            throw new Error("The url slug is the same of another category. Please use another name without special characters.");
+        }
+    });
 
 const todosByCategoryGet = ash(async (req, res, next) => {
     const category = await getCategoryByUrl(req.params.category);
     if (!category) {
-        const err = new Error("Not found");
-        err.status = 404;
-        return next(err);
+        return next();
     }
-    const categories = await utilityFunctions.getAllCategories();
     const id = category.cat_id;
     const filter = utilityFunctions.getTodosFilter(req.query);
     const dates = await getTodosDatesByCategory(filter, id);
     const todos = await getTodosByCategory(filter, id);
-    res.render('category', { title: `${category.name}`, category, categories, todos, dates });
+    res.render('category', { title: `${category.name}`, category, categories: res.locals.categories, todos, dates });
 });
 
 const categoryNewGet = ash(async (req, res) => {
-    const categories = await utilityFunctions.getAllCategories();
-    res.render("new-category", { title: "Add a new category", categories });
+    res.render("new-category", { title: "Add a new category", categories: res.locals.categories });
 });
 
 const categoryNewPost = [
@@ -72,32 +79,18 @@ const categoryNewPost = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             req.flash("error", errors.array());
-            res.redirect(`/category/new`);
-            return;
-        } else {
-            const { name } = req.body;
-            const categoryExists = await getCategoryByName(name);
-            const categoryUrl = createCategoryUrl(name);
-            const categoryUrlExists = await getCategoryByUrl(categoryUrl);
-            if (categoryExists) {
-                req.flash("warning", "Warning: The category already exists. Please use another name.")
-                res.redirect(categoryExists.url);
-            } else if (categoryUrlExists) {
-                req.flash("warning", "Warning: The url slug is the same of another category. Please use another name without special characters.")
-                res.redirect("/category/new");
-            } else {
-                await createNewCategory(name);
-                const category = await getCategoryByName(name);
-                req.flash("success", "New category added!")
-                res.redirect(category.url);
-            }
+            return res.redirect(`/category/new`);
         }
-    })];
+        const { name } = req.body;
+        await createNewCategory(name);
+        const category = await getCategoryByName(name);
+        req.flash("success", "New category added!")
+        res.redirect(`/category/${category.url}`);
+    }
+    )];
 
 const categoryDelete = ash(async (req, res) => {
     const url = req.params.category;
-    const category = await getCategoryByUrl(url);
-    await sql.query("DELETE FROM todos WHERE category = ?", category.cat_id);
     await sql.query("DELETE FROM categories WHERE url = ?", url);
     req.flash("success", "The category was deleted");
     res.json({ redirect: '/' });
@@ -110,26 +103,14 @@ const categoryPut = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             req.flash("error", errors.array());
-            res.redirect(`/category/${url}`);
-            return;
-        } else {
-            const { name } = req.body;
-            const categoryExists = await getCategoryByName(name);
-            const categoryUrl = createCategoryUrl(name);
-            const categoryUrlExists = await getCategoryByUrl(categoryUrl);
-            if (categoryExists) {
-                req.flash("warning", "Warning: The category already exists. Please use another name.")
-                res.redirect(`/category/${url}`);
-            } else if (categoryUrlExists) {
-                req.flash("warning", "Warning: The url slug is the same of another category. Please use another name without special characters.")
-                res.redirect(`/category/${url}`);
-            } else {
-                await sql.query("UPDATE categories SET name = ? WHERE url = ?", [name, url]);
-                await sql.query("UPDATE categories SET url = ? WHERE name = ?", [categoryUrl, name]);
-                req.flash("success", "Category name was updated.")
-                res.redirect(`/category/${categoryUrl}`);
-            }
+            return res.redirect(`/category/${url}`);
         }
-    })];
+        const { name } = req.body;
+        const categoryUrl = createCategoryUrl(name);
+        await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ?", [name, categoryUrl, url]);
+        req.flash("success", "Category name was updated.")
+        res.redirect(`/category/${categoryUrl}`);
+    }
+    )];
 
-module.exports = { todosByCategoryGet, categoryNewGet, categoryNewPost, categoryDelete, categoryPut }
+module.exports = { todosByCategoryGet, categoryNewGet, categoryNewPost, categoryDelete, categoryPut };

@@ -19,11 +19,10 @@ async function getIndexTodos(filter) {
 }
 
 const getAllTodos = ash(async (req, res) => {
-    const categories = await utilityFunctions.getAllCategories();
     const filter = utilityFunctions.getTodosFilter(req.query);
     const todos = await getIndexTodos(filter);
     const dates = await getIndexTodosDates(filter);
-    res.render('index', { title: "All todos", categories, todos, dates });
+    res.render('index', { title: "All todos", categories: res.locals.categories, todos, dates });
 });
 
 const changeTodoStatus = ash(async (req, res) => {

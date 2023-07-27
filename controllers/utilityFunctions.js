@@ -1,13 +1,13 @@
 const sql = require('../models/dbConfig');
 
-async function getAllCategories() {
+async function getAllCategories(req, res, next) {
     const [rows] = await sql.query("SELECT * FROM categories ORDER BY name ASC");
-    return rows;
+    res.locals.categories = rows;
+    next();
 }
 
 function showMessage(req, res, next) {
     res.locals.success = req.flash("success");
-    res.locals.warning = req.flash("warning");
     res.locals.error = req.flash("error");
     next();
 }
