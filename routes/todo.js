@@ -4,13 +4,13 @@ const todoController = require('../controllers/todoController');
 
 //New todo page
 router.get('/new', todoController.todoNewGet);
-router.post('/new', todoController.todoNewPost);
+router.post('/', todoController.todoNewPost);
 
 //Edit todo page
-router.get('/:id/edit', todoController.todoEditGet);
-router.put('/:id/edit', todoController.todoEditPut);
+router.get('/:id/', todoController.todoEditGet);
+router.put('/:id/', todoController.todoEditPut);
 
 //Delete todo
-router.delete('/:id/delete', todoController.todoDelete);
+router.delete('/:id/', todoController.todoDelete);
 
 module.exports = router;

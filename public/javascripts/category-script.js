@@ -41,7 +41,7 @@ function closeModalCategory() {
 }
 
 async function deleteCategory() {
-    const response = await fetch(`/category/${categoryUrl}/delete`, { method: "DELETE" });
+    const response = await fetch(`/category/${categoryUrl}/`, { method: "DELETE" });
     const data = await response.json();
     window.location.href = data.redirect;
 }
@@ -50,7 +50,7 @@ function createRenameDOM() {
     const form = document.createElement("form");
     form.noValidate = true;
     form.setAttribute("method", "post");
-    form.setAttribute("action", `/category/${categoryUrl}/edit?_method=PUT`);
+    form.setAttribute("action", `/category/${categoryUrl}?_method=PUT`);
     const input = document.createElement("input");
     input.setAttribute("type", "text");
     input.setAttribute("name", "name");

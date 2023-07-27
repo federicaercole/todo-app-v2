@@ -17,7 +17,7 @@
             <% const adjustDateToLocalTimeZone=date=>{ const dateCopy=new Date(date);
               dateCopy.setTime(dateCopy.getTime()
               - dateCopy.getTimezoneOffset()*60*1000); return dateCopy.toISOString().split('T')[0]; } %>
-              <form method="post" action="/todo/<%= todo.todo_id %>/edit?_method=PUT" novalidate>
+              <form method="post" action="/todo/<%= todo.todo_id %>?_method=PUT" novalidate>
                 <div>
                   <p class="info error hidden" id="title-err" aria-live="polite"></p>
                   <label for="title">Title</label>

@@ -46,7 +46,7 @@ function closeModal(id) {
 
 async function deleteItem(id) {
     const path = window.location.pathname;
-    const response = await fetch(`/todo/${id}/delete`, {
+    const response = await fetch(`/todo/${id}`, {
         method: "DELETE", headers: { "Content-Type": "application/json; charset=UTF-8" }, body: JSON.stringify({ id, url: path })
     });
     const data = await response.json();
