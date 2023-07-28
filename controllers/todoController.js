@@ -17,7 +17,7 @@ async function getSingleTodo(id) {
     return result[0];
 }
 
-const formValidation = [body("title", "Todo title must be between 1 and 40 characters").trim().isLength({ min: 1, max: 40 }).escape(),
+const formValidation = [body("title", "Todo title must be between 1 and 100 characters").trim().isLength({ min: 1, max: 100 }).escape(),
 body("due_date", "You must insert a valid due date").isISO8601().toDate(),
 body("priority", "You must choose a priority level").notEmpty(),
 body("category", "You must choose a category").notEmpty(),
