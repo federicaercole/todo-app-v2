@@ -24,7 +24,6 @@ app.set('view engine', 'ejs');
 
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    "default-src": ["'self'", "wss:"],
     "style-src": ["'self'", "fonts.googleapis.com"],
     "font-src": ["'self'", "fonts.gstatic.com"],
   },
