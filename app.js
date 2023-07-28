@@ -6,6 +6,8 @@ const logger = require('morgan');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const flash = require('connect-flash');
+const compression = require("compression");
+const helmet = require("helmet");
 require('dotenv').config();
 
 //Routers
@@ -20,11 +22,13 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(helmet());
 app.use(methodOverride('_method'));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SECRET_KEY,
