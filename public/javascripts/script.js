@@ -94,7 +94,7 @@ function checkFilterCheckboxes(item) {
     document.querySelector(`input[value="${item}"]`).checked = true;
 }
 
-if (params.size > 0) {
+if (params.has("sort")) {
     sortOption.value = params.get("sort");
     params.getAll("priority[]").forEach(checkFilterCheckboxes);
     params.getAll("done[]").forEach(checkFilterCheckboxes);

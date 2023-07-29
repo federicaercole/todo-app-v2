@@ -201,6 +201,7 @@ section article {
 }
 
 section input[type="checkbox"] {
+  -webkit-appearance: none;
   appearance: none;
   background-color: #FFF;
   color: var(--secondary-color-800);
@@ -357,6 +358,7 @@ legend {
 }
 
 fieldset input[type="checkbox"] {
+  -webkit-appearance: none;
   appearance: none;
   opacity: 0;
 }
