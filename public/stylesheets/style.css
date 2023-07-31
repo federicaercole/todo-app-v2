@@ -337,6 +337,7 @@ select {
   padding: 4px 12px;
   width: min(500px, 100%);
   background-color: #FFF;
+  color: var(--secondary-color-800);
 }
 
 fieldset {
@@ -361,6 +362,7 @@ fieldset input[type="checkbox"] {
   -webkit-appearance: none;
   appearance: none;
   opacity: 0;
+  position: fixed;
 }
 
 fieldset label {
@@ -477,7 +479,7 @@ button:not(.link, .close) {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 500px;
+  width: min(500px, 100% - 2rem);
   padding: 32px;
   background-color: var(--background-color);
   position: absolute;

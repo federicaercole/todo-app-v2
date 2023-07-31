@@ -17,14 +17,14 @@ async function getSingleTodo(id) {
     return result[0];
 }
 
-const formValidation = [body("title", "Todo title must be between 1 and 100 characters").trim().isLength({ min: 1, max: 100 }).escape(),
+const formValidation = [body("title", "To-do title must be between 1 and 100 characters").trim().isLength({ min: 1, max: 100 }).escape(),
 body("due_date", "You must insert a valid due date").isISO8601().toDate(),
 body("priority", "You must choose a priority level").notEmpty(),
 body("category", "You must choose a category").notEmpty(),
 ]
 
 const todoNewGet = ash(async (req, res) => {
-    res.render('new-todo', { title: "New todo", categories: res.locals.categories });
+    res.render('new-todo', { title: "New to-do", categories: res.locals.categories });
 });
 
 const todoNewPost = [
@@ -37,7 +37,7 @@ const todoNewPost = [
         }
         const { title, due_date, priority, category } = req.body;
         await createTodo(title, due_date, priority, category);
-        req.flash("success", "New todo created");
+        req.flash("success", "New to-do created");
         res.redirect('/');
     })];
 
@@ -47,7 +47,7 @@ const todoEditGet = ash(async (req, res, next) => {
     if (!todo) {
         return next();
     }
-    res.render('edit-todo', { title: "Edit todo", categories: res.locals.categories, todo })
+    res.render('edit-todo', { title: "Edit to-do", categories: res.locals.categories, todo })
 });
 
 const todoEditPut = [
@@ -61,14 +61,14 @@ const todoEditPut = [
         }
         const { title, due_date, priority, category } = req.body;
         await updateTodo(title, due_date, priority, category, id);
-        req.flash("success", "The todo was edited");
+        req.flash("success", "The to-do was edited");
         res.redirect(`/todo/${id}`);
     })];
 
 const todoDelete = ash(async (req, res) => {
     const { id, url } = req.body;
     await sql.query("DELETE FROM todos WHERE todo_id = ?", id);
-    req.flash("success", "The todo was deleted");
+    req.flash("success", "The to-do was deleted");
     res.json({ redirect: url });
 });
 

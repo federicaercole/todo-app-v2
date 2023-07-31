@@ -21,7 +21,7 @@ function openModalTodo(event) {
     const modal = document.querySelector(".modal");
     const h2 = modal.querySelector("h2");
     const p = modal.querySelector("p");
-    h2.textContent = "Delete this todo?"
+    h2.textContent = "Delete this to-do?"
     p.textContent = "It will be gone forever!"
     modal.classList.remove("hidden");
     const cancelBtn = document.querySelector("#cancel");

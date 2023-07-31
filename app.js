@@ -26,6 +26,7 @@ app.use(helmet.contentSecurityPolicy({
   directives: {
     "style-src": ["'self'", "fonts.googleapis.com"],
     "font-src": ["'self'", "fonts.gstatic.com"],
+    "img-src": ["'self'", "https://federicaercole.com"]
   },
 }),);
 app.use(methodOverride('_method'));

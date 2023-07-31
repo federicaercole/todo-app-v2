@@ -16,7 +16,7 @@ form.addEventListener("submit", (event) => {
         if (!inputTitle.validity.valid) {
             inputTitle.setAttribute("aria-invalid", "true");
             errorTitle.classList.remove("hidden");
-            errorTitle.innerHTML = `${errorIcon} Todo title must be between 1 and 100 characters`;
+            errorTitle.innerHTML = `${errorIcon} To-do title must be between 1 and 100 characters`;
         } else {
             inputTitle.setAttribute("aria-invalid", "false");
             errorTitle.classList.add("hidden");
