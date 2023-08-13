@@ -7,10 +7,10 @@ router.get('/new', todoController.todoNewGet);
 router.post('/', todoController.todoNewPost);
 
 //Edit todo page
-router.get('/:id/', todoController.todoEditGet);
-router.put('/:id/', todoController.todoEditPut);
+router.get('/:id', todoController.todoEditGet);
+router.put('/:id', todoController.todoEditPut);
 
 //Delete todo
-router.delete('/:id/', todoController.todoDelete);
+router.delete('/:id', todoController.todoDelete);
 
 module.exports = router;

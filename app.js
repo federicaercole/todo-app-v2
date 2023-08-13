@@ -14,6 +14,7 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const todoRouter = require('./routes/todo');
 const categoryRouter = require('./routes/category');
+const userRouter = require('./routes/user');
 const utilityFunction = require('./controllers/utilityFunctions');
 
 const app = express();
@@ -48,6 +49,7 @@ app.use(utilityFunction.getAllCategories);
 app.use('/', indexRouter);
 app.use('/todo', todoRouter);
 app.use('/category', categoryRouter);
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
