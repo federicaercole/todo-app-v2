@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/userController');
 
-router.get('/new',);
-router.post('/',)
+router.post('/', userController.userNewPost);
 
 module.exports = router;

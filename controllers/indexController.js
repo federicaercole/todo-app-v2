@@ -32,4 +32,8 @@ const changeTodoStatus = ash(async (req, res) => {
     await sql.query("UPDATE todos SET done = ? WHERE todo_id = ?", [status, id])
 });
 
-module.exports = { getAllTodos, changeTodoStatus };
+const userSignUpGet = ash(async (req, res) => {
+    res.render('sign-up', { title: "Sign up" });
+});
+
+module.exports = { getAllTodos, changeTodoStatus, userSignUpGet };
