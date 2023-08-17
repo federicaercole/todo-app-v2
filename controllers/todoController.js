@@ -1,7 +1,7 @@
 const sql = require('../config/dbConfig.js');
 const ash = require("express-async-handler");
 const { body } = require("express-validator");
-const { checkIfThereAreErrors } = require("./utilityFunctions.js");
+const utilityFunctions = require("./utilityFunctions.js");
 
 async function createTodo(title, due_date, priority, category) {
     const [result] = await sql.query(`INSERT INTO todos (title, due_date, priority, category, user_id) VALUES (?, ?, ?, ?)`, [title, due_date, priority, category]);
@@ -31,7 +31,7 @@ const todoNewGet = ash(async (req, res) => {
 const todoNewPost = [
     formValidation,
     ash(async (req, res) => {
-        checkIfThereAreErrors(req, res, "/todo/new");
+        utilityFunctions.checkIfThereAreErrors(req, res, "/todo/new");
         const { title, due_date, priority, category } = req.body;
         await createTodo(title, due_date, priority, category);
         req.flash("success", "New to-do created");
@@ -51,7 +51,7 @@ const todoEditPut = [
     formValidation,
     ash(async (req, res) => {
         const id = req.params.id;
-        checkIfThereAreErrors(req, res, `todo/${id}`);
+        utilityFunctions.checkIfThereAreErrors(req, res, `todo/${id}`);
         const { title, due_date, priority, category } = req.body;
         await updateTodo(title, due_date, priority, category, id);
         req.flash("success", "The to-do was edited");
@@ -65,4 +65,34 @@ const todoDelete = ash(async (req, res) => {
     res.json({ redirect: url });
 });
 
-module.exports = { todoNewGet, todoNewPost, todoEditGet, todoEditPut, todoDelete };
+async function getIndexTodosDates(filter, id) {
+    let query = `SELECT DISTINCT due_date FROM todos, categories WHERE todos.category = categories.cat_id AND todos.user_id=?`;
+    query += filter;
+    const [rows] = await sql.query(query, id);
+    const dates = rows.map(row => row.due_date);
+    return dates;
+}
+
+async function getIndexTodos(filter, id) {
+    let query = `SELECT todo_id, title, due_date, priority, done, name AS category
+    FROM todos, categories WHERE todos.category = categories.cat_id AND todos.user_id=?`;
+    query += filter;
+    const [rows] = await sql.query(query, id);
+    return rows;
+}
+
+const getAllTodos = ash(async (req, res) => {
+    const filter = utilityFunctions.getTodosFilter(req.query);
+    const todos = await getIndexTodos(filter, res.locals.currentUser.id);
+    const dates = await getIndexTodosDates(filter, res.locals.currentUser.id);
+    res.render('index', { title: "All todos", categories: res.locals.categories, todos, dates });
+});
+
+const changeTodoStatus = ash(async (req, res) => {
+    const id = req.body.id;
+    const [result] = await sql.query("SELECT done FROM todos WHERE todo_id = ?", id);
+    const status = result[0].done === 0 ? 1 : 0;
+    await sql.query("UPDATE todos SET done = ? WHERE todo_id = ?", [status, id])
+});
+
+module.exports = { todoNewGet, todoNewPost, todoEditGet, todoEditPut, todoDelete, getAllTodos, changeTodoStatus };

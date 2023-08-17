@@ -2,7 +2,8 @@ const sql = require('../config/dbConfig');
 const { validationResult } = require("express-validator");
 
 async function getAllCategories(req, res, next) {
-    const [rows] = await sql.query("SELECT * FROM categories ORDER BY name ASC");
+    const id = res.locals.currentUser.id;
+    const [rows] = await sql.query("SELECT name, url FROM categories WHERE user_id = ? ORDER BY name ASC", id);
     res.locals.categories = rows;
     next();
 }
@@ -11,6 +12,14 @@ function showMessage(req, res, next) {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
+}
+
+function isAuth(req, res, next) {
+    if (req.isAuthenticated()) {
+        res.locals.currentUser = req.user;
+        return next();
+    }
+    res.redirect("sign-in");
 }
 
 function checkIfThereAreErrors(req, res, redirectTo) {
@@ -37,4 +46,4 @@ const getTodosFilter = query => {
     return filter;
 };
 
-module.exports = { getAllCategories, showMessage, getTodosFilter, checkIfThereAreErrors };
+module.exports = { getAllCategories, showMessage, getTodosFilter, checkIfThereAreErrors, isAuth };

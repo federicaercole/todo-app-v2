@@ -14,9 +14,8 @@ require('dotenv').config();
 
 //Routers
 const indexRouter = require('./routes/index');
-const todoRouter = require('./routes/todo');
-const categoryRouter = require('./routes/category');
 const userRouter = require('./routes/user');
+const todoRouter = require('./routes/todo')
 const utilityFunction = require('./controllers/utilityFunctions');
 
 const app = express();
@@ -46,15 +45,16 @@ app.use(session({
 }));
 app.use(flash());
 app.use(utilityFunction.showMessage);
-app.use(utilityFunction.getAllCategories);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
-app.use('/todo', todoRouter);
-app.use('/category', categoryRouter);
 app.use('/user', userRouter);
+
+app.use(utilityFunction.isAuth);
+app.use(utilityFunction.getAllCategories);
+app.use('/todo', todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

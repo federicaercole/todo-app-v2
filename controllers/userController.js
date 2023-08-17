@@ -33,7 +33,7 @@ const userNewPost = [accountCreationValidation, ash(async (req, res) => {
 })];
 
 const signIn = passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/todo/all",
     failureRedirect: "/sign-in",
     failureFlash: "Incorrect email address or password"
 });
