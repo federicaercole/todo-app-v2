@@ -1,7 +1,9 @@
-const sql = require('../models/dbConfig.js');
+const sql = require('../config/dbConfig.js');
 const ash = require("express-async-handler");
 const bcrypt = require('bcryptjs');
-const { body, validationResult } = require("express-validator");
+const passport = require("passport");
+const { body } = require("express-validator");
+const { checkIfThereAreErrors } = require("./utilityFunctions.js");
 
 const accountCreationValidation = [body("email", "Must be a valid email address").trim().isEmail().bail().custom(async value => {
     const [user] = await sql.query("SELECT email FROM users WHERE email = ?", value);
@@ -21,13 +23,8 @@ body("confirm-password", "Passwords do not match").notEmpty().custom((value, { r
     return value === req.body.password;
 })];
 
-
 const userNewPost = [accountCreationValidation, ash(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        req.flash("error", errors.array());
-        return res.redirect(`sign-up`);
-    }
+    checkIfThereAreErrors(req, res, "sign-up");
     const { email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     await sql.query("INSERT INTO users (email, password) VALUES(?,?)", [email, hashedPassword]);
@@ -35,4 +32,10 @@ const userNewPost = [accountCreationValidation, ash(async (req, res) => {
     res.redirect('sign-in');
 })];
 
-module.exports = { userNewPost };
+const signIn = passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/sign-in",
+    failureFlash: "Incorrect email address or password"
+});
+
+module.exports = { userNewPost, signIn };

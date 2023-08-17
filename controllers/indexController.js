@@ -1,5 +1,5 @@
 const utilityFunctions = require('./utilityFunctions')
-const sql = require('../models/dbConfig');
+const sql = require('../config/dbConfig');
 const ash = require("express-async-handler");
 
 async function getIndexTodosDates(filter) {
@@ -36,4 +36,8 @@ const userSignUpGet = ash(async (req, res) => {
     res.render('sign-up', { title: "Sign up" });
 });
 
-module.exports = { getAllTodos, changeTodoStatus, userSignUpGet };
+const userSignInGet = ash(async (req, res) => {
+    res.render('sign-in', { title: "Sign in" });
+});
+
+module.exports = { getAllTodos, changeTodoStatus, userSignUpGet, userSignInGet };

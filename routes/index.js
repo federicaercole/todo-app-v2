@@ -6,7 +6,8 @@ const indexController = require('../controllers/indexController');
 router.get('/', indexController.getAllTodos);
 router.put('/', indexController.changeTodoStatus);
 
-//sign up page
+//sign up and in page
 router.get('/sign-up', indexController.userSignUpGet);
+router.get('/sign-in', indexController.userSignInGet);
 
 module.exports = router;

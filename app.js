@@ -8,6 +8,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const compression = require("compression");
 const helmet = require("helmet");
+const passport = require("passport");
+require('./config/passport');
 require('dotenv').config();
 
 //Routers
@@ -40,12 +42,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SECRET_KEY,
   saveUninitialized: true,
-  resave: true
+  resave: false
 }));
 app.use(flash());
-
 app.use(utilityFunction.showMessage);
 app.use(utilityFunction.getAllCategories);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
 app.use('/todo', todoRouter);
 app.use('/category', categoryRouter);
