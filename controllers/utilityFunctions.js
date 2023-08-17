@@ -3,7 +3,7 @@ const { validationResult } = require("express-validator");
 
 async function getAllCategories(req, res, next) {
     const id = res.locals.currentUser.id;
-    const [rows] = await sql.query("SELECT name, url FROM categories WHERE user_id = ? ORDER BY name ASC", id);
+    const [rows] = await sql.query("SELECT name, url, cat_id FROM categories WHERE user_id = ? ORDER BY name ASC", id);
     res.locals.categories = rows;
     next();
 }
@@ -19,7 +19,7 @@ function isAuth(req, res, next) {
         res.locals.currentUser = req.user;
         return next();
     }
-    res.redirect("sign-in");
+    res.redirect("/sign-in");
 }
 
 function checkIfThereAreErrors(req, res, redirectTo) {

@@ -7,7 +7,7 @@ checkboxes.forEach(checkbox => checkbox.addEventListener("change", async (event)
     } else {
         todo.classList.remove("done");
     }
-    await fetch("/", {
+    await fetch("/todo", {
         method: "PUT", headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ id })
     });
