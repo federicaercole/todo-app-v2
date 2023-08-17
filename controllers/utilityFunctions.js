@@ -1,4 +1,5 @@
-const sql = require('../models/dbConfig');
+const sql = require('../config/dbConfig');
+const { validationResult } = require("express-validator");
 
 async function getAllCategories(req, res, next) {
     const [rows] = await sql.query("SELECT * FROM categories ORDER BY name ASC");
@@ -10,6 +11,15 @@ function showMessage(req, res, next) {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
+}
+
+function checkIfThereAreErrors(req, res, redirectTo) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorsArray = errors.array().map(item => item.msg);
+        req.flash("error", errorsArray);
+        return res.redirect(redirectTo);
+    }
 }
 
 const getTodosFilter = query => {
@@ -27,4 +37,4 @@ const getTodosFilter = query => {
     return filter;
 };
 
-module.exports = { getAllCategories, showMessage, getTodosFilter };
+module.exports = { getAllCategories, showMessage, getTodosFilter, checkIfThereAreErrors };

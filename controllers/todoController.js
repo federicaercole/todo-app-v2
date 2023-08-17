@@ -1,9 +1,10 @@
-const sql = require('../models/dbConfig.js');
+const sql = require('../config/dbConfig.js');
 const ash = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
+const { checkIfThereAreErrors } = require("./utilityFunctions.js");
 
 async function createTodo(title, due_date, priority, category) {
-    const [result] = await sql.query(`INSERT INTO todos (title, due_date, priority, category) VALUES (?, ?, ?, ?)`, [title, due_date, priority, category]);
+    const [result] = await sql.query(`INSERT INTO todos (title, due_date, priority, category, user_id) VALUES (?, ?, ?, ?)`, [title, due_date, priority, category]);
     return result;
 }
 
@@ -30,11 +31,7 @@ const todoNewGet = ash(async (req, res) => {
 const todoNewPost = [
     formValidation,
     ash(async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            req.flash("error", errors.array());
-            return res.redirect(`/todo/new`);
-        }
+        checkIfThereAreErrors(req, res, "/todo/new");
         const { title, due_date, priority, category } = req.body;
         await createTodo(title, due_date, priority, category);
         req.flash("success", "New to-do created");
@@ -53,12 +50,8 @@ const todoEditGet = ash(async (req, res, next) => {
 const todoEditPut = [
     formValidation,
     ash(async (req, res) => {
-        const errors = validationResult(req);
         const id = req.params.id;
-        if (!errors.isEmpty()) {
-            req.flash("error", errors.array());
-            return res.redirect(`/todo/${id}`);
-        }
+        checkIfThereAreErrors(req, res, `todo/${id}`);
         const { title, due_date, priority, category } = req.body;
         await updateTodo(title, due_date, priority, category, id);
         req.flash("success", "The to-do was edited");

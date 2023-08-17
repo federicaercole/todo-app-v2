@@ -1,7 +1,8 @@
-const sql = require('../models/dbConfig.js');
+const sql = require('../config/dbConfig.js');
 const utilityFunctions = require('./utilityFunctions.js');
 const ash = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
+const { checkIfThereAreErrors } = require("./utilityFunctions.js");
 
 async function getTodosByCategory(filter, category) {
     let query = "SELECT todo_id, title, due_date, priority, done, name AS category FROM todos JOIN categories ON todos.category = categories.cat_id WHERE cat_id = ?";
@@ -76,11 +77,7 @@ const categoryNewGet = ash(async (req, res) => {
 const categoryNewPost = [
     formValidation,
     ash(async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            req.flash("error", errors.array());
-            return res.redirect(`/category/new`);
-        }
+        checkIfThereAreErrors(req, res, "/category/new");
         const { name } = req.body;
         await createNewCategory(name);
         const category = await getCategoryByName(name);
@@ -100,11 +97,7 @@ const categoryPut = [
     formValidation,
     ash(async (req, res) => {
         const url = req.params.category;
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            req.flash("error", errors.array());
-            return res.redirect(`/category/${url}`);
-        }
+        checkIfThereAreErrors(req, res, `/category/${url}`);
         const { name } = req.body;
         const categoryUrl = createCategoryUrl(name);
         await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ?", [name, categoryUrl, url]);
