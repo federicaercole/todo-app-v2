@@ -85,7 +85,7 @@ const getAllTodos = ash(async (req, res) => {
     const filter = utilityFunctions.getTodosFilter(req.query);
     const todos = await getIndexTodos(filter, res.locals.currentUser.id);
     const dates = await getIndexTodosDates(filter, res.locals.currentUser.id);
-    res.render('index', { title: "All todos", categories: res.locals.categories, todos, dates });
+    res.render('todo-index', { title: "All todos", categories: res.locals.categories, todos, dates });
 });
 
 const changeTodoStatus = ash(async (req, res) => {
