@@ -27,7 +27,7 @@ function checkIfThereAreErrors(req, res, redirectTo) {
     if (!errors.isEmpty()) {
         const errorsArray = errors.array().map(item => item.msg);
         req.flash("error", errorsArray);
-        return res.redirect(redirectTo);
+        res.redirect(redirectTo);
     }
 }
 
