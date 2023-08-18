@@ -8,4 +8,13 @@ const userSignInGet = ash(async (req, res) => {
     res.render('sign-in', { title: "Sign in" });
 });
 
-module.exports = { userSignUpGet, userSignInGet };
+const userLogout = (req, res, next) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect("/");
+    });
+};
+
+module.exports = { userSignUpGet, userSignInGet, userLogout };
