@@ -75,7 +75,7 @@ modal.addEventListener("keydown", event => {
     else return;
 });
 
-const form = document.querySelector(".filter");
+const form = document.querySelector("#filter-menu");
 const filterBtn = document.querySelector("#filter");
 const sortOption = form.querySelector("#sort");
 const params = new URLSearchParams(window.location.search);

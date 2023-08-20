@@ -1,18 +1,29 @@
 const menuBtn = document.querySelector("#menu");
-const span = menuBtn.querySelector("span");
 const nav = document.querySelector(".navigation");
+const userMenu = document.querySelector("#user-menu");
+const accountBtn = document.querySelector("#account");
 
-menuBtn.addEventListener("click", () => {
-    if (!nav.classList.contains("show-menu")) {
-        nav.classList.add("show-menu");
-        span.textContent = "Close menu";
-        menuBtn.setAttribute("aria-expanded", "true");
+function openMenu(menuToOpen, btnMenuToOpen, otherMenu, btnOtherMenu) {
+    const spanMenuToOpen = btnMenuToOpen.querySelector("span");
+    const spanOtherMenu = btnOtherMenu.querySelector("span");
+    if (!menuToOpen.classList.contains("show-menu")) {
+        menuToOpen.classList.add("show-menu");
+        spanMenuToOpen.textContent = "Close menu";
+        btnMenuToOpen.setAttribute("aria-expanded", "true");
+
+        otherMenu.classList.remove("show-menu");
+        btnOtherMenu.setAttribute("aria-expanded", "false");
+        spanOtherMenu.textContent = "Open menu";
     } else {
-        menuBtn.setAttribute("aria-expanded", "false");
-        nav.classList.remove("show-menu");
-        span.textContent = "Open menu";
+        btnMenuToOpen.setAttribute("aria-expanded", "false");
+        menuToOpen.classList.remove("show-menu");
+        spanMenuToOpen.textContent = "Open menu";
     }
-});
+}
+
+menuBtn.addEventListener("click", () => { openMenu(nav, menuBtn, userMenu, accountBtn) });
+
+accountBtn.addEventListener("click", () => { openMenu(userMenu, accountBtn, nav, menuBtn) });
 
 if (document.querySelector("body>.info")) {
     const close = document.querySelector(".close");
