@@ -1,0 +1,21 @@
+<div class="bar">
+    <button id="menu" type="button" aria-haspopup="true" aria-controls="menu-nav" aria-expanded="false">
+        <span class="visually-hidden">Open menu</span>
+    </button>
+    <div>
+        <button type="button" id="account" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu">
+            <%= currentUser.email %> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                    focusable="false">
+                    <path fill="currentColor" d="m7 10l5 5l5-5z" />
+                </svg>
+        </button>
+        <nav class="dropdown" id="user-menu">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="m17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+                </svg><a href="/logout">Logout</a>
+            </div>
+        </nav>
+    </div>
+</div>

@@ -5,29 +5,30 @@
 
   <body>
     <%- include("./partials/message.ejs") %>
-      <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-      <div class="page">
-        <%- include("./partials/menu.ejs") %>
-          <main data-id="<%= category.url %>" id="main">
-            <header>
-              <div>
-                <h1>
-                  <%= title %>
-                </h1>
+      <%- include("./partials/user-bar.ejs") %>
+        <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
+        <div class="page">
+          <%- include("./partials/menu.ejs") %>
+            <main data-id="<%= category.url %>" id="main">
+              <header>
                 <div>
-                  <button type="button" id="rename" class="link">Rename</button>
-                  <button type="button" id="delete" class="link">Delete</button>
+                  <h1>
+                    <%= title %>
+                  </h1>
+                  <div>
+                    <button type="button" id="rename" class="link">Rename</button>
+                    <button type="button" id="delete" class="link">Delete</button>
+                  </div>
                 </div>
-              </div>
-              <%- include("./partials/filters.ejs") %>
-            </header>
-            <%- include("./partials/todos.ejs") %>
-          </main>
-      </div>
-      <%- include("./partials/modal.ejs") %>
-        <script src="/javascripts/navigation.js"></script>
-        <script src="/javascripts/script.js"></script>
-        <script src="/javascripts/category-script.js"></script>
+                <%- include("./partials/filters.ejs") %>
+              </header>
+              <%- include("./partials/todos.ejs") %>
+            </main>
+        </div>
+        <%- include("./partials/modal.ejs") %>
+          <script src="/javascripts/navigation.js"></script>
+          <script src="/javascripts/script.js"></script>
+          <script src="/javascripts/category-script.js"></script>
   </body>
 
 </html>

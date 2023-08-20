@@ -32,6 +32,7 @@ a {
   --none-priority: #cbd5e1;
   --none-priority-light: hsl(213, 7%, 84%);
   --background-color: #f1f5f9;
+  --background-color-dark: hsl(210, 40%, 90%);
   --accent-color: rgb(156, 196, 251);
   --accent-color-400: rgb(81, 139, 221);
   --accent-color-800: hsl(215, 67%, 39%);
@@ -98,7 +99,7 @@ h4 {
   display: none;
   position: absolute;
   z-index: 9;
-  height: fit-content;
+  /* height: fit-content; */
   width: 100%;
   min-height: 100vh;
   background-color: var(--background-color);
@@ -130,7 +131,7 @@ main {
 
 main header {
   padding-block-end: 32px;
-  border-bottom: 2px dashed var(--secondary-color-400);
+  border-bottom: 2px solid var(--secondary-color-800);
   margin-block-start: 5rem;
 }
 
@@ -234,6 +235,22 @@ section div {
   gap: 16px;
 }
 
+/*Bar*/
+.bar {
+  display: flex;
+  background-color: var(--accent-color);
+  padding: 1rem;
+  border-bottom: 3px solid var(--secondary-color-800);
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.bar>div>button {
+  display: flex;
+  align-items: center;
+}
+
 /*Todos by category page*/
 header div,
 header form {
@@ -278,8 +295,12 @@ fieldset [type="checkbox"]:focus+label {
   outline-offset: 3px;
 }
 
-button:not(.link, .close):hover,
-button:not(.link, .close):focus {
+#account:focus {
+  outline-offset: 0px;
+}
+
+button:not(.link, .close, #account, #menu):hover,
+button:not(.link, .close, #account, #menu):focus {
   background-color: var(--accent-color-800);
   color: var(--background-color);
   text-decoration: none;
@@ -306,7 +327,14 @@ button:not(.link, .close):focus {
   z-index: 20;
 }
 
-/*Forms*/
+#user-menu:hover,
+#user-menu:active {
+  background-color: var(--background-color-dark);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/*Forms and dropdown*/
 
 main>form {
   display: flex;
@@ -328,8 +356,7 @@ main>form>*+* {
   margin-block-start: 32px;
 }
 
-input[type="text"],
-input[type="date"],
+input:not(input[type="checkbox"]),
 select {
   border: 3px solid var(--secondary-color-800);
   font-family: inherit;
@@ -382,19 +409,39 @@ fieldset input[type="checkbox"]:checked+label {
   font-weight: 500;
 }
 
-.filter {
+.dropdown {
   display: none;
   position: absolute;
   background-color: var(--background-color);
-  padding: 2rem 1rem;
-  margin-inline-end: clamp(1rem, 6%, 3rem);
   z-index: 1;
-  max-width: min(500px, 100%);
   border: 3px solid var(--secondary-color-800);
 }
 
-.filter>div {
+#filter-menu {
+  margin-inline-end: clamp(1rem, 6%, 3rem);
+  padding: 2rem 1rem;
+  max-width: min(500px, 100%);
+}
+
+#filter-menu>div {
   gap: 16px;
+}
+
+#user-menu {
+  width: min(250px, 100%);
+  right: calc(1rem - 3px);
+}
+
+#user-menu>* {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 1rem;
+}
+
+#user-menu a {
+  width: 100%;
 }
 
 /*Buttons*/
@@ -409,7 +456,7 @@ button {
   cursor: pointer;
 }
 
-button:not(.link, .close) {
+button:not(.link, .close, #account, #menu) {
   border: 3px solid var(--secondary-color-800);
   padding: 8px 16px;
   background-color: var(--accent-color);
@@ -422,7 +469,7 @@ button:not(.link, .close) {
   gap: 8px;
 }
 
-.filter button {
+.dropdown button {
   flex-basis: 100%;
 }
 
@@ -432,9 +479,7 @@ button:not(.link, .close) {
   justify-content: center;
   align-items: center;
   padding: 1.5rem;
-  position: absolute;
-  right: 0;
-  margin: clamp(1rem, 6%, 3rem);
+
   z-index: 11;
   box-shadow: none;
   background-image: url("../images/open-menu.svg");
@@ -443,6 +488,7 @@ button:not(.link, .close) {
   background-position: 50%;
   background-color: transparent;
   border: none;
+  margin-inline-end: auto;
 }
 
 #menu[aria-expanded="true"] {
@@ -453,8 +499,12 @@ button:not(.link, .close) {
   display: block;
 }
 
-.filter.show-menu {
+.dropdown.show-menu {
   display: flex;
+}
+
+#account {
+  padding: 0 1rem;
 }
 
 /*Modal*/
@@ -548,7 +598,7 @@ form .info {
 }
 
 @media screen and (prefers-reduced-motion:no-preference) {
-  button:not(.link, .close) {
+  button:not(.link, .close, #account, #menu) {
     transition: box-shadow ease 0.5s;
   }
 }

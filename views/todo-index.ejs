@@ -5,22 +5,23 @@
 
   <body>
     <%- include("./partials/message.ejs") %>
-      <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-      <div class="page">
-        <%- include("./partials/menu.ejs") %>
-          <main id="main">
-            <header>
-              <h1>
-                <%= title %>
-              </h1>
-              <%- include("./partials/filters.ejs") %>
-            </header>
-            <%- include("./partials/todos.ejs") %>
-          </main>
-      </div>
-      <%- include("./partials/modal.ejs") %>
-        <script src="/javascripts/navigation.js"></script>
-        <script src="/javascripts/script.js"></script>
+      <%- include("./partials/user-bar.ejs") %>
+        <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
+        <div class="page">
+          <%- include("./partials/menu.ejs") %>
+            <main id="main">
+              <header>
+                <h1>
+                  <%= title %>
+                </h1>
+                <%- include("./partials/filters.ejs") %>
+              </header>
+              <%- include("./partials/todos.ejs") %>
+            </main>
+        </div>
+        <%- include("./partials/modal.ejs") %>
+          <script src="/javascripts/navigation.js"></script>
+          <script src="/javascripts/script.js"></script>
   </body>
 
 </html>
