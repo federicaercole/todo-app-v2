@@ -5,20 +5,26 @@
 
     <body>
         <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-        <div class="page">
-            <%- include("./partials/menu.ejs") %>
-                <main id="main">
-                    <header>
-                        <h1>
-                            Page Not Found
-                        </h1>
-                    </header>
-                    <p>Sorry, the requested page doesn't exist.
-                        <a href="/" class="underline">Return to the homepage</a>.
-                    </p>
-                </main>
-        </div>
-        <script src="/javascripts/navigation.js"></script>
+        <% if(typeof currentUser !=="undefined" ) {%>
+            <%- include("./partials/user-bar.ejs") %>
+                <% } %>
+                    <div class="page">
+                        <% if(typeof currentUser !=="undefined" ) {%>
+                            <%- include("./partials/menu.ejs") %>
+                                <% } %>
+                                    <main id="main">
+                                        <header>
+                                            <h1>
+                                                Page Not Found
+                                            </h1>
+                                        </header>
+                                        <p>Sorry, the requested page doesn't exist.
+                                            <a href="<%= typeof currentUser !== 'undefined' ? '/todo/all/' : '/' %>"
+                                                class="underline">Return to the homepage</a>.
+                                        </p>
+                                    </main>
+                    </div>
+                    <script src="/javascripts/navigation.js"></script>
     </body>
 
 </html>

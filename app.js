@@ -1,7 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const methodOverride = require('method-override');
 const session = require('express-session');
@@ -35,13 +34,15 @@ app.use(methodOverride('_method'));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SECRET_KEY,
   saveUninitialized: true,
-  resave: false
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 app.use(flash());
 app.use(utilityFunction.showMessage);
@@ -51,10 +52,7 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-
-app.use(utilityFunction.isAuth);
-app.use(utilityFunction.getAllCategories);
-app.use('/todo', todoRouter);
+app.use('/todo', utilityFunction.isAuth, utilityFunction.getAllCategories, todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
