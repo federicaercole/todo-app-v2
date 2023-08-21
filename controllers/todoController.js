@@ -1,7 +1,7 @@
 const sql = require('../config/dbConfig.js');
 const ash = require("express-async-handler");
 const { body } = require("express-validator");
-const utilityFunctions = require("./utilityFunctions.js");
+const { checkIfThereAreErrors, getTodosFilter } = require("./utilityFunctions.js");
 
 async function createTodo(title, due_date, priority, category, userId) {
     const [result] = await sql.query(`INSERT INTO todos (title, due_date, priority, category, user_id) VALUES (?, ?, ?, ?, ?)`, [title, due_date, priority, category, userId]);
@@ -31,11 +31,13 @@ const todoNewGet = ash(async (req, res) => {
 const todoNewPost = [
     formValidation,
     ash(async (req, res) => {
-        utilityFunctions.checkIfThereAreErrors(req, res, "/todo/new");
-        const { title, due_date, priority, category } = req.body;
-        await createTodo(title, due_date, priority, category, res.locals.currentUser.id);
-        req.flash("success", "New to-do created");
-        res.redirect('/todo/all');
+        const errorsExist = checkIfThereAreErrors(req, res, "/todo/new");
+        if (!errorsExist) {
+            const { title, due_date, priority, category } = req.body;
+            await createTodo(title, due_date, priority, category, res.locals.currentUser.id);
+            req.flash("success", "New to-do created");
+            res.redirect('/todo/all');
+        }
     })];
 
 const todoEditGet = ash(async (req, res, next) => {
@@ -51,11 +53,13 @@ const todoEditPut = [
     formValidation,
     ash(async (req, res) => {
         const todoId = req.params.id;
-        utilityFunctions.checkIfThereAreErrors(req, res, `todo/${todoId}`);
-        const { title, due_date, priority, category } = req.body;
-        await updateTodo(title, due_date, priority, category, todoId, res.locals.currentUser.id);
-        req.flash("success", "The to-do was edited");
-        res.redirect(`/todo/${todoId}`);
+        const errorsExist = checkIfThereAreErrors(req, res, `todo/${todoId}`);
+        if (!errorsExist) {
+            const { title, due_date, priority, category } = req.body;
+            await updateTodo(title, due_date, priority, category, todoId, res.locals.currentUser.id);
+            req.flash("success", "The to-do was edited");
+            res.redirect(`/todo/${todoId}`);
+        }
     })];
 
 const todoDelete = ash(async (req, res) => {
@@ -82,7 +86,7 @@ async function getIndexTodos(filter, id) {
 }
 
 const getAllTodos = ash(async (req, res) => {
-    const filter = utilityFunctions.getTodosFilter(req.query);
+    const filter = getTodosFilter(req.query);
     const todos = await getIndexTodos(filter, res.locals.currentUser.id);
     const dates = await getIndexTodosDates(filter, res.locals.currentUser.id);
     res.render('todo-index', { title: "All todos", categories: res.locals.categories, todos, dates });

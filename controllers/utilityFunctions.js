@@ -28,7 +28,9 @@ function checkIfThereAreErrors(req, res, redirectTo) {
         const errorsArray = errors.array().map(item => item.msg);
         req.flash("error", errorsArray);
         res.redirect(redirectTo);
+        return true;
     }
+    return false;
 }
 
 const getTodosFilter = query => {

@@ -77,12 +77,14 @@ const categoryNewGet = ash(async (req, res) => {
 const categoryNewPost = [
     formValidation,
     ash(async (req, res) => {
-        checkIfThereAreErrors(req, res, "/todo/category/new");
-        const { name } = req.body;
-        await createNewCategory(name, res.locals.currentUser.id);
-        const category = await getCategoryByName(name, res.locals.currentUser.id);
-        req.flash("success", "New category added!")
-        res.redirect(`/todo/category/${category.url}`);
+        const errorsExist = checkIfThereAreErrors(req, res, "/todo/category/new");
+        if (!errorsExist) {
+            const { name } = req.body;
+            await createNewCategory(name, res.locals.currentUser.id);
+            const category = await getCategoryByName(name, res.locals.currentUser.id);
+            req.flash("success", "New category added!")
+            res.redirect(`/todo/category/${category.url}`);
+        }
     }
     )];
 
@@ -97,12 +99,14 @@ const categoryPut = [
     formValidation,
     ash(async (req, res) => {
         const url = req.params.category;
-        checkIfThereAreErrors(req, res, `/todo/category/${url}`);
-        const { name } = req.body;
-        const categoryUrl = createCategoryUrl(name);
-        await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ? AND user_id = ?", [name, categoryUrl, url, res.locals.currentUser.id]);
-        req.flash("success", "Category name was updated.")
-        res.redirect(`/todo/category/${categoryUrl}`);
+        const errorsExist = checkIfThereAreErrors(req, res, `/todo/category/${url}`);
+        if (!errorsExist) {
+            const { name } = req.body;
+            const categoryUrl = createCategoryUrl(name);
+            await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ? AND user_id = ?", [name, categoryUrl, url, res.locals.currentUser.id]);
+            req.flash("success", "Category name was updated.")
+            res.redirect(`/todo/category/${categoryUrl}`);
+        }
     }
     )];
 
