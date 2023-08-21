@@ -32,7 +32,8 @@ a {
   --none-priority: #cbd5e1;
   --none-priority-light: hsl(213, 7%, 84%);
   --background-color: #f1f5f9;
-  --background-color-dark: hsl(210, 40%, 90%);
+  --background-color-400: hsl(210, 40%, 90%);
+  --background-color-600: hsl(210, 40%, 80%);
   --accent-color: rgb(156, 196, 251);
   --accent-color-400: rgb(81, 139, 221);
   --accent-color-800: hsl(215, 67%, 39%);
@@ -160,7 +161,7 @@ section article {
   padding: clamp(1rem, 3%, 1.5rem);
   align-items: center;
   border: 3px solid var(--secondary-color-800);
-  box-shadow: 7px 7px 0px var(--secondary-color-800);
+  box-shadow: 7px 7px 0px var(--background-color-600);
 }
 
 .done h3 {
@@ -239,7 +240,7 @@ section div {
 .bar {
   display: flex;
   background-color: var(--accent-color);
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   border-bottom: 3px solid var(--secondary-color-800);
   align-items: center;
   justify-content: flex-end;
@@ -288,15 +289,16 @@ a[aria-current] {
   font-weight: 500;
 }
 
-*:focus,
+*:not(#account):focus,
 .close:hover,
 fieldset [type="checkbox"]:focus+label {
   outline: 3px solid var(--secondary-color-800);
   outline-offset: 3px;
 }
 
-#account:focus {
-  outline-offset: 0px;
+#account:focus-visible {
+  outline: 3px solid var(--secondary-color-800);
+  outline-offset: 3px;
 }
 
 button:not(.link, .close, #account, #menu):hover,
@@ -327,11 +329,13 @@ button:not(.link, .close, #account, #menu):focus {
   z-index: 20;
 }
 
-#user-menu:hover,
-#user-menu:active {
-  background-color: var(--background-color-dark);
+#user-menu a:hover,
+#user-menu a:active,
+#user-menu a:focus {
+  background-color: var(--background-color-400);
   text-decoration: underline;
   font-weight: 500;
+  outline: 0;
 }
 
 /*Forms and dropdown*/
@@ -429,7 +433,7 @@ fieldset input[type="checkbox"]:checked+label {
 
 #user-menu {
   width: min(250px, 100%);
-  right: calc(1rem - 3px);
+  right: calc(1rem - 6px);
 }
 
 #user-menu>* {
@@ -438,10 +442,6 @@ fieldset input[type="checkbox"]:checked+label {
   gap: 8px;
   width: 100%;
   padding: 1rem;
-}
-
-#user-menu a {
-  width: 100%;
 }
 
 /*Buttons*/
@@ -478,8 +478,7 @@ button:not(.link, .close, #account, #menu) {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem;
-
+  padding: 1rem;
   z-index: 11;
   box-shadow: none;
   background-image: url("../images/open-menu.svg");
@@ -504,7 +503,7 @@ button:not(.link, .close, #account, #menu) {
 }
 
 #account {
-  padding: 0 1rem;
+  padding: 0.5rem 0;
 }
 
 /*Modal*/
@@ -573,6 +572,31 @@ header .info,
 form .info {
   border: 3px solid var(--secondary-color-800);
   justify-content: flex-start;
+}
+
+/* Sign in sign up pages*/
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card>main {
+  border: 5px solid var(--secondary-color-800);
+  width: min(550px, 100%);
+  margin: 2rem;
+  box-shadow: 14px 14px 0px var(--background-color-600);
+}
+
+.card>main>header {
+  margin-block-start: 0;
+  text-align: center;
+}
+
+.note {
+  font-size: var(--fs-50);
+  text-align: right;
 }
 
 /* Media queries*/

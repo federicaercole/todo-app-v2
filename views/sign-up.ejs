@@ -4,9 +4,9 @@
 <%- include("./partials/head.ejs") %>
 
     <body>
+        <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
         <%- include("./partials/message.ejs") %>
-            <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-            <div class="page">
+            <div class="card">
                 <main id="main">
                     <header>
                         <h1>
@@ -31,6 +31,7 @@
                         </div>
                         <button type="submit">Sign up</button>
                     </form>
+                    <p class="note">Already have an account? <a href="/sign-in" class="underline">Sign in</a></p>
                 </main>
             </div>
             <script src="/javascripts/sign-validation.js"></script>
