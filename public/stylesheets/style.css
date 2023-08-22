@@ -81,6 +81,11 @@ svg {
   flex-shrink: 0;
 }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
 /*Typography*/
 h1 {
   font-size: var(--fs-400);
@@ -93,6 +98,89 @@ h2 {
 h4 {
   text-transform: uppercase;
   margin-right: auto;
+}
+
+.note {
+  font-size: var(--fs-50);
+  text-align: right;
+}
+
+.highlight {
+  background-color: var(--accent-color);
+  padding: 0.5rem;
+}
+
+/*Homepage*/
+
+.home {
+  margin: 0 auto;
+  max-width: min(1400px, 100%);
+}
+
+.home h1,
+.home h3,
+.home section h2 {
+  text-align: center;
+}
+
+.home h3 {
+  font-size: var(--fs-200);
+}
+
+.home h2+p {
+  margin-block-start: 1rem;
+}
+
+.home section {
+  grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
+}
+
+.home section article {
+  flex-direction: column;
+  padding: 2rem;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.home article>*+* {
+  margin-block-start: 1.5rem;
+}
+
+.home section article img {
+  max-height: 161px;
+}
+
+.home article header {
+  margin-block-start: 0;
+  padding-block-end: 1rem;
+}
+
+.home article {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.home article div {
+  max-width: min(400px, 100%);
+}
+
+.home article img {
+  max-width: 700px;
+  max-height: 600px;
+}
+
+.home h1+p,
+.home section+p {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.home article p {
+  line-height: 1.7;
 }
 
 /*Nav*/
@@ -302,7 +390,9 @@ fieldset [type="checkbox"]:focus+label {
 }
 
 button:not(.link, .close, #account, #menu):hover,
-button:not(.link, .close, #account, #menu):focus {
+.button:hover,
+button:not(.link, .close, #account, #menu):focus,
+.button:focus {
   background-color: var(--accent-color-800);
   color: var(--background-color);
   text-decoration: none;
@@ -446,7 +536,8 @@ fieldset input[type="checkbox"]:checked+label {
 
 /*Buttons*/
 
-button {
+button,
+.button {
   font-family: inherit;
   font-size: inherit;
   background-color: transparent;
@@ -454,9 +545,11 @@ button {
   border: 0;
   padding: 0;
   cursor: pointer;
+  text-align: center;
 }
 
-button:not(.link, .close, #account, #menu) {
+button:not(.link, .close, #account, #menu),
+.button {
   border: 3px solid var(--secondary-color-800);
   padding: 8px 16px;
   background-color: var(--accent-color);
@@ -503,7 +596,7 @@ button:not(.link, .close, #account, #menu) {
 }
 
 #account {
-  padding: 0.5rem 0;
+  padding: 0.5rem 0 0.5rem 0.5rem;
 }
 
 /*Modal*/
@@ -594,11 +687,6 @@ form .info {
   text-align: center;
 }
 
-.note {
-  font-size: var(--fs-50);
-  text-align: right;
-}
-
 /* Media queries*/
 @media screen and (min-width: 50rem) {
   .navigation {
@@ -616,13 +704,19 @@ form .info {
 }
 
 @media screen and (min-width: 75rem) {
-  section {
+  .page section {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .home article:first-of-type div {
+    order: 2;
   }
 }
 
 @media screen and (prefers-reduced-motion:no-preference) {
-  button:not(.link, .close, #account, #menu) {
+
+  button:not(.link, .close, #account, #menu),
+  .button {
     transition: box-shadow ease 0.5s;
   }
 }
