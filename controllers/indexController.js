@@ -17,4 +17,8 @@ const userLogout = (req, res, next) => {
     });
 };
 
-module.exports = { userSignUpGet, userSignInGet, userLogout };
+function getHome(req, res) {
+    res.render('homepage', { title: "To-do App Homepage" })
+}
+
+module.exports = { userSignUpGet, userSignInGet, userLogout, getHome };
