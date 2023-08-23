@@ -102,7 +102,6 @@ h4 {
 
 .note {
   font-size: var(--fs-50);
-  text-align: right;
 }
 
 .highlight {
@@ -115,6 +114,18 @@ h4 {
 .home {
   margin: 0 auto;
   max-width: min(1400px, 100%);
+}
+
+.home main {
+  padding-block-end: 0;
+}
+
+.img-container {
+  border: 5px solid var(--secondary-color-800);
+  box-shadow: 14px 14px 0px var(--background-color-600);
+  max-width: min(300px, 100%);
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 .home h1,
@@ -228,8 +239,16 @@ header>*+* {
   margin-block-start: 16px;
 }
 
-main>*+* {
+main>*+*,
+footer {
   margin-block-start: clamp(3rem, 12%, 6rem);
+}
+
+/*Footer*/
+footer {
+  background-color: var(--background-color-600);
+  padding: 2rem 1rem;
+  text-align: center;
 }
 
 /*Todos*/
@@ -687,6 +706,10 @@ form .info {
   text-align: center;
 }
 
+.card .note {
+  text-align: right;
+}
+
 /* Media queries*/
 @media screen and (min-width: 50rem) {
   .navigation {
@@ -700,6 +723,10 @@ form .info {
 
   main header {
     margin-block-start: 2rem;
+  }
+
+  .img-container {
+    max-width: 900px;
   }
 }
 
