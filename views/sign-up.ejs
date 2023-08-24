@@ -3,38 +3,40 @@
 
 <%- include("./partials/head.ejs") %>
 
-    <body>
-        <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-        <%- include("./partials/message.ejs") %>
-            <div class="card">
-                <main id="main">
-                    <header>
-                        <h1>
-                            <%= title %>
-                        </h1>
-                    </header>
-                    <form method="post" action="/user" novalidate>
-                        <div>
-                            <p class="info error hidden" id="email-err" aria-live="polite"></p>
-                            <label for="email">Email address</label>
-                            <input type="email" id="email" name="email" aria-describedby="email-err"
-                                aria-invalid="false" required>
-                        </div>
-                        <div>
-                            <p class="info error hidden" id="password-err" aria-live="polite"></p>
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" aria-describedby="password-err"
-                                aria-invalid="false" required>
-                            <label for="confirm-password">Confirm password</label>
-                            <input type="password" id="confirm-password" name="confirm-password"
-                                aria-describedby="password-err" aria-invalid="false" required>
-                        </div>
-                        <button type="submit">Sign up</button>
-                    </form>
-                    <p class="note">Already have an account? <a href="/sign-in" class="underline">Sign in</a></p>
-                </main>
-            </div>
-            <script src="/javascripts/sign-validation.js"></script>
-    </body>
+<body>
+    <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
+    <%- include("./partials/message.ejs") %>
+    <%- include("./partials/home-bar.ejs") %>
+    <div class="card">
+        <main id="main">
+            <header>
+                <h1>
+                    <%= title %>
+                </h1>
+            </header>
+            <form method="post" action="/user" novalidate>
+                <div>
+                    <p class="info error hidden" id="email-err" aria-live="polite"></p>
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" name="email" aria-describedby="email-err" aria-invalid="false"
+                        required>
+                </div>
+                <div>
+                    <p class="info error hidden" id="password-err" aria-live="polite"></p>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" aria-describedby="password-err"
+                        aria-invalid="false" required>
+                    <label for="confirm-password">Confirm password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" aria-describedby="password-err"
+                        aria-invalid="false" required>
+                </div>
+                <button type="submit">Sign up</button>
+            </form>
+            <p class="note">Already have an account? <a href="/sign-in" class="underline">Sign in</a></p>
+        </main>
+    </div>
+    <script src="/javascripts/sign-validation.js"></script>
+    <script src="/javascripts/navigation.js"></script>
+</body>
 
 </html>

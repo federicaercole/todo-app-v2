@@ -1,19 +1,19 @@
 const menuBtn = document.querySelector("#menu");
 const nav = document.querySelector(".navigation");
-const userMenu = document.querySelector("#user-menu");
-const accountBtn = document.querySelector("#account");
 
-function openMenu(menuToOpen, btnMenuToOpen, otherMenu, btnOtherMenu) {
+function openMenu(menuToOpen, btnMenuToOpen, otherMenu = null, btnOtherMenu = null) {
     const spanMenuToOpen = btnMenuToOpen.querySelector("span");
-    const spanOtherMenu = btnOtherMenu.querySelector("span");
+
     if (!menuToOpen.classList.contains("show-menu")) {
         menuToOpen.classList.add("show-menu");
         spanMenuToOpen.textContent = "Close menu";
         btnMenuToOpen.setAttribute("aria-expanded", "true");
-
-        otherMenu.classList.remove("show-menu");
-        btnOtherMenu.setAttribute("aria-expanded", "false");
-        spanOtherMenu.textContent = "Open menu";
+        if (otherMenu) {
+            const spanOtherMenu = btnOtherMenu.querySelector("span");
+            otherMenu.classList.remove("show-menu");
+            btnOtherMenu.setAttribute("aria-expanded", "false");
+            spanOtherMenu.textContent = "Open menu";
+        }
     } else {
         btnMenuToOpen.setAttribute("aria-expanded", "false");
         menuToOpen.classList.remove("show-menu");
@@ -21,9 +21,14 @@ function openMenu(menuToOpen, btnMenuToOpen, otherMenu, btnOtherMenu) {
     }
 }
 
-menuBtn.addEventListener("click", () => { openMenu(nav, menuBtn, userMenu, accountBtn) });
-
-accountBtn.addEventListener("click", () => { openMenu(userMenu, accountBtn, nav, menuBtn) });
+if (document.querySelector("#account")) {
+    const userMenu = document.querySelector("#user-menu");
+    const accountBtn = document.querySelector("#account");
+    menuBtn.addEventListener("click", () => { openMenu(nav, menuBtn, userMenu, accountBtn) });
+    accountBtn.addEventListener("click", () => { openMenu(userMenu, accountBtn, nav, menuBtn) });
+} else {
+    menuBtn.addEventListener("click", () => { openMenu(nav, menuBtn) });
+}
 
 if (document.querySelector("body>.info")) {
     const close = document.querySelector(".close");
