@@ -119,6 +119,7 @@ h4 {
 .home {
   margin: 0 auto;
   max-width: min(1400px, 100%);
+  text-align: center;
 }
 
 .img-container {
@@ -137,12 +138,6 @@ h4 {
 
 .home h2 {
   font-size: var(--fs-400);
-}
-
-.home h1,
-.home h3,
-.home section h2 {
-  text-align: center;
 }
 
 .home h3 {
@@ -202,6 +197,16 @@ h4 {
 
 .home article p {
   line-height: 1.7;
+}
+
+/*404 error page*/
+
+.error-404 img {
+  margin-inline: auto;
+}
+
+.error-404 {
+  padding: clamp(3rem, 9%, 4rem);
 }
 
 /*Nav*/
@@ -735,14 +740,12 @@ form .info {
 .card {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  padding: clamp(3rem, 9%, 5rem);
 }
 
 .card>main {
   border: 5px solid var(--secondary-color-800);
   width: min(550px, 100%);
-  margin: 2rem;
   box-shadow: 14px 14px 0px var(--background-color-600);
   padding: clamp(1rem, 6%, 3rem);
 }
