@@ -68,7 +68,7 @@ body {
 }
 
 .home>main {
-  padding-inline: clamp(1rem, 6%, 3rem);
+  padding-inline: 1rem;
 }
 
 .visually-hidden {
@@ -183,7 +183,7 @@ h4 {
 }
 
 .home article img {
-  max-width: 700px;
+  width: 700px;
   max-height: 600px;
 }
 
@@ -206,7 +206,8 @@ h4 {
 }
 
 .error-404 {
-  padding: clamp(3rem, 9%, 4rem);
+  padding-block: clamp(3rem, 9%, 4rem);
+  padding-inline: 1rem;
 }
 
 /*Nav*/
@@ -740,7 +741,8 @@ form .info {
 .card {
   display: flex;
   justify-content: center;
-  padding: clamp(3rem, 9%, 5rem);
+  padding-block: clamp(3rem, 9%, 5rem);
+  padding-inline: 1rem;
 }
 
 .card>main {
