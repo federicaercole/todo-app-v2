@@ -25,7 +25,7 @@ body("category", "You must choose a category").notEmpty(),
 ]
 
 const todoNewGet = ash(async (req, res) => {
-    res.render('new-todo', { title: "New to-do", categories: res.locals.categories });
+    res.render('new-todo', { title: "New to-do" });
 });
 
 const todoNewPost = [
@@ -34,7 +34,7 @@ const todoNewPost = [
         const errorsExist = checkIfThereAreErrors(req, res, "/todo/new");
         if (!errorsExist) {
             const { title, due_date, priority, category } = req.body;
-            await createTodo(title, due_date, priority, category, res.locals.currentUser.id);
+            await createTodo(title, due_date, priority, category, req.user.id);
             req.flash("success", "New to-do created");
             res.redirect('/todo/all');
         }
@@ -42,11 +42,11 @@ const todoNewPost = [
 
 const todoEditGet = ash(async (req, res, next) => {
     const todoId = req.params.id;
-    const todo = await getSingleTodo(todoId, res.locals.currentUser.id);
+    const todo = await getSingleTodo(todoId, req.user.id);
     if (!todo) {
         return next();
     }
-    res.render('edit-todo', { title: "Edit to-do", categories: res.locals.categories, todo })
+    res.render('edit-todo', { title: "Edit to-do", todo })
 });
 
 const todoEditPut = [
@@ -56,7 +56,7 @@ const todoEditPut = [
         const errorsExist = checkIfThereAreErrors(req, res, `todo/${todoId}`);
         if (!errorsExist) {
             const { title, due_date, priority, category } = req.body;
-            await updateTodo(title, due_date, priority, category, todoId, res.locals.currentUser.id);
+            await updateTodo(title, due_date, priority, category, todoId, req.user.id);
             req.flash("success", "The to-do was edited");
             res.redirect(`/todo/${todoId}`);
         }
@@ -64,7 +64,7 @@ const todoEditPut = [
 
 const todoDelete = ash(async (req, res) => {
     const { id, url } = req.body;
-    await sql.query("DELETE FROM todos WHERE todo_id = ? AND user_id = ?", [id, res.locals.currentUser.id]);
+    await sql.query("DELETE FROM todos WHERE todo_id = ? AND user_id = ?", [id, req.user.id]);
     req.flash("success", "The to-do was deleted");
     res.json({ redirect: url });
 });
@@ -87,14 +87,14 @@ async function getIndexTodos(filter, id) {
 
 const getAllTodos = ash(async (req, res) => {
     const filter = getTodosFilter(req.query);
-    const todos = await getIndexTodos(filter, res.locals.currentUser.id);
-    const dates = await getIndexTodosDates(filter, res.locals.currentUser.id);
-    res.render('todo-index', { title: "All todos", categories: res.locals.categories, todos, dates });
+    const todos = await getIndexTodos(filter, req.user.id);
+    const dates = await getIndexTodosDates(filter, req.user.id);
+    res.render('todo-index', { title: "All todos", todos, dates });
 });
 
 const changeTodoStatus = ash(async (req, res) => {
     const todoId = req.body.id;
-    const [result] = await sql.query("SELECT done FROM todos WHERE todo_id = ? AND user_id = ?", [todoId, res.locals.currentUser.id]);
+    const [result] = await sql.query("SELECT done FROM todos WHERE todo_id = ? AND user_id = ?", [todoId, req.user.id]);
     const status = result[0].done === 0 ? 1 : 0;
     await sql.query("UPDATE todos SET done = ? WHERE todo_id = ?", [status, todoId])
 });

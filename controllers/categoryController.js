@@ -59,19 +59,19 @@ const formValidation = body("name", "Category name must be between 3 and 30 char
     });
 
 const todosByCategoryGet = ash(async (req, res, next) => {
-    const category = await getCategoryByUrl(req.params.category, res.locals.currentUser.id);
+    const category = await getCategoryByUrl(req.params.category, req.user.id);
     if (!category) {
         return next();
     }
     const id = category.cat_id;
     const filter = utilityFunctions.getTodosFilter(req.query);
-    const dates = await getTodosDatesByCategory(filter, id, res.locals.currentUser.id);
-    const todos = await getTodosByCategory(filter, id, res.locals.currentUser.id);
-    res.render('category', { title: `${category.name}`, category, categories: res.locals.categories, todos, dates });
+    const dates = await getTodosDatesByCategory(filter, id, req.user.id);
+    const todos = await getTodosByCategory(filter, id, req.user.id);
+    res.render('category', { title: `${category.name}`, category, todos, dates });
 });
 
 const categoryNewGet = ash(async (req, res) => {
-    res.render("new-category", { title: "Add a new category", categories: res.locals.categories });
+    res.render("new-category", { title: "Add a new category" });
 });
 
 const categoryNewPost = [
@@ -80,8 +80,8 @@ const categoryNewPost = [
         const errorsExist = checkIfThereAreErrors(req, res, "/todo/category/new");
         if (!errorsExist) {
             const { name } = req.body;
-            await createNewCategory(name, res.locals.currentUser.id);
-            const category = await getCategoryByName(name, res.locals.currentUser.id);
+            await createNewCategory(name, req.user.id);
+            const category = await getCategoryByName(name, req.user.id);
             req.flash("success", "New category added!")
             res.redirect(`/todo/category/${category.url}`);
         }
@@ -90,7 +90,7 @@ const categoryNewPost = [
 
 const categoryDelete = ash(async (req, res) => {
     const url = req.params.category;
-    await sql.query("DELETE FROM categories WHERE url = ? AND user_id = ?", [url, res.locals.currentUser.id]);
+    await sql.query("DELETE FROM categories WHERE url = ? AND user_id = ?", [url, req.user.id]);
     req.flash("success", "The category was deleted");
     res.json({ redirect: '/todo/all' });
 });
@@ -103,7 +103,7 @@ const categoryPut = [
         if (!errorsExist) {
             const { name } = req.body;
             const categoryUrl = createCategoryUrl(name);
-            await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ? AND user_id = ?", [name, categoryUrl, url, res.locals.currentUser.id]);
+            await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ? AND user_id = ?", [name, categoryUrl, url, req.user.id]);
             req.flash("success", "Category name was updated.")
             res.redirect(`/todo/category/${categoryUrl}`);
         }

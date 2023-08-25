@@ -21,4 +21,10 @@ function getHome(req, res) {
     res.render('homepage', { title: "To-do App Homepage" })
 }
 
-module.exports = { userSignUpGet, userSignInGet, userLogout, getHome };
+const demoUserSignIn = (req, res, next) => {
+    req.body.email = process.env.DEMOUSER_EMAIL;
+    req.body.password = process.env.DEMOUSER_PASS;
+    next();
+}
+
+module.exports = { userSignUpGet, userSignInGet, userLogout, getHome, demoUserSignIn };
