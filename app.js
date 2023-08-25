@@ -50,9 +50,11 @@ app.use(utilityFunction.showMessage);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(utilityFunction.saveUser);
+
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-app.use('/todo', utilityFunction.isAuth, utilityFunction.getAllCategories, todoRouter);
+app.use('/todo', utilityFunction.isAuth, todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

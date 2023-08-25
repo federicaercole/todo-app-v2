@@ -1,11 +1,11 @@
 const sql = require('../config/dbConfig');
 const { validationResult } = require("express-validator");
+const ash = require("express-async-handler");
 
-async function getAllCategories(req, res, next) {
-    const id = res.locals.currentUser.id;
+async function getAllCategories(req, res) {
+    const id = req.user.id;
     const [rows] = await sql.query("SELECT name, url, cat_id FROM categories WHERE user_id = ? ORDER BY name ASC", id);
     res.locals.categories = rows;
-    next();
 }
 
 function showMessage(req, res, next) {
@@ -14,9 +14,16 @@ function showMessage(req, res, next) {
     next();
 }
 
+const saveUser = ash(async (req, res, next) => {
+    res.locals.currentUser = req.user;
+    if (req.isAuthenticated()) {
+        await getAllCategories(req, res);
+    }
+    next();
+});
+
 function isAuth(req, res, next) {
     if (req.isAuthenticated()) {
-        res.locals.currentUser = req.user;
         return next();
     }
     res.redirect("/sign-in");
@@ -48,4 +55,4 @@ const getTodosFilter = query => {
     return filter;
 };
 
-module.exports = { getAllCategories, showMessage, getTodosFilter, checkIfThereAreErrors, isAuth };
+module.exports = { getAllCategories, showMessage, getTodosFilter, checkIfThereAreErrors, isAuth, saveUser };

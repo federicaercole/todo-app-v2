@@ -6,9 +6,13 @@
         <nav id="home-nav">
             <ul>
                 <li><a href="/">Home</a></li>
+                <% if(typeof currentUser !=="undefined" ) {%>
+                <li><a href="/todo/all" class="button">Go to App</a></li>
+                <%} else {%>
                 <li><a href="/sign-in">Sign in</a></li>
                 <li><a href="/demo">Try a demo</a></li>
                 <li><a href="/sign-up" class="button">Get Started</a></li>
+                <%}%>
             </ul>
         </nav>
     </div>
