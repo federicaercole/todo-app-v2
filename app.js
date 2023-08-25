@@ -4,6 +4,8 @@ const path = require('path');
 const logger = require('morgan');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const sql = require('./config/dbConfig');
 const flash = require('connect-flash');
 const compression = require("compression");
 const helmet = require("helmet");
@@ -18,6 +20,13 @@ const todoRouter = require('./routes/todo')
 const utilityFunction = require('./controllers/utilityFunctions');
 
 const app = express();
+const sessionStore = new MySQLStore({
+  clearExpired: true,
+  checkExpirationInterval: 900000,
+  expiration: 86400000,
+  createDatabaseTable: true,
+  endConnectionOnClose: true,
+}, sql);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,8 +49,10 @@ app.use(session({
   secret: process.env.SECRET_KEY,
   saveUninitialized: true,
   resave: false,
+  store: sessionStore,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: true,
   }
 }));
 app.use(flash());
