@@ -1,3 +1,5 @@
+import { openModal } from "./modal.js";
+
 const categoryUrl = document.querySelector("main").dataset.id;
 const h1 = document.querySelector("h1");
 const categoryName = h1.innerText;
@@ -8,43 +10,10 @@ focusable="false">
 </svg>`
 
 const deleteBtn = document.querySelector("#delete");
-deleteBtn.addEventListener("click", openModalCategory);
+deleteBtn.addEventListener("click", openModal("category"));
 
 const renameBtn = document.querySelector("#rename");
 renameBtn.addEventListener("click", createRenameDOM);
-
-function openModalCategory() {
-    const modal = document.querySelector(".modal");
-    const h2 = modal.querySelector("h2");
-    const p = modal.querySelector("p");
-    h2.textContent = "Delete this category?"
-    p.textContent = "Deleting a category deletes all the todos associated with the category!"
-    modal.classList.remove("hidden");
-    const cancelBtn = document.querySelector("#cancel");
-    const confirmBtn = document.querySelector("#confirm");
-    cancelBtn.focus();
-
-    cancelBtn.addEventListener("click", closeModalCategory);
-    confirmBtn.addEventListener("click", deleteCategory);
-
-    modal.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-            closeModalCategory();
-        }
-    });
-}
-
-function closeModalCategory() {
-    modal.classList.add("hidden");
-    const deleteBtn = document.querySelector("#delete");
-    deleteBtn.focus();
-}
-
-async function deleteCategory() {
-    const response = await fetch(`/todo/category/${categoryUrl}`, { method: "DELETE" });
-    const data = await response.json();
-    window.location.href = data.redirect;
-}
 
 function createRenameDOM() {
     const form = document.createElement("form");

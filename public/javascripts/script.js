@@ -1,79 +1,25 @@
+import { fetchData, endpoints } from "./utility.js";
+import { openModal } from "./modal.js";
+
 const checkboxes = [...document.querySelectorAll("article input[type='checkbox']")];
 checkboxes.forEach(checkbox => checkbox.addEventListener("change", async (event) => {
     const id = event.target.dataset.id;
     const todo = document.querySelector(`[data-id="${id}"]`);
+
     if (event.target.checked) {
         todo.classList.add("done");
     } else {
         todo.classList.remove("done");
     }
-    await fetch("/todo", {
+
+    fetchData(endpoints.todo, {
         method: "PUT", headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ id })
     });
 }));
 
 const deleteBtns = [...document.querySelectorAll(".delete-todo")];
-deleteBtns.forEach(button => button.addEventListener("click", event => openModalTodo(event)));
-
-function openModalTodo(event) {
-    const id = event.currentTarget.dataset.id;
-    const modal = document.querySelector(".modal");
-    const h2 = modal.querySelector("h2");
-    const p = modal.querySelector("p");
-    h2.textContent = "Delete this to-do?"
-    p.textContent = "It will be gone forever!"
-    modal.classList.remove("hidden");
-    const cancelBtn = document.querySelector("#cancel");
-    const confirmBtn = document.querySelector("#confirm");
-
-    cancelBtn.focus();
-    cancelBtn.addEventListener("click", () => closeModal(id));
-    confirmBtn.addEventListener("click", () => deleteItem(id));
-
-    modal.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-            closeModal(id);
-        }
-    });
-}
-
-function closeModal(id) {
-    modal.classList.add("hidden");
-    const deleteBtn = document.querySelector(`.delete-todo[data-id='${id}']`);
-    deleteBtn.focus();
-}
-
-async function deleteItem(id) {
-    const path = window.location.pathname;
-    const response = await fetch(`/todo/${id}`, {
-        method: "DELETE", headers: { "Content-Type": "application/json; charset=UTF-8" }, body: JSON.stringify({ id, url: path })
-    });
-    const data = await response.json();
-    window.location.href = data.redirect;
-}
-
-const modal = document.querySelector(".modal");
-
-modal.addEventListener("keydown", event => {
-    const firstFocusableElement = modal.querySelectorAll("button")[0];
-    const focusableContent = modal.querySelectorAll("button");
-    const lastFocusableElement = focusableContent[focusableContent.length - 1];
-
-    if (event.key === "Tab" && !event.shiftKey) {
-        if (document.activeElement === lastFocusableElement) {
-            firstFocusableElement.focus();
-            event.preventDefault();
-        }
-    }
-    else if (event.key === "Tab" && event.shiftKey) {
-        if (document.activeElement === firstFocusableElement) {
-            lastFocusableElement.focus();
-            event.preventDefault();
-        }
-    }
-    else return;
-});
+deleteBtns.forEach(button => button.addEventListener("click", openModal("todo")));
 
 const form = document.querySelector("#filter-menu");
 const filterBtn = document.querySelector("#filter");

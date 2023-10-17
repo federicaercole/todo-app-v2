@@ -63,7 +63,8 @@ const todoEditPut = [
     })];
 
 const todoDelete = ash(async (req, res) => {
-    const { id, url } = req.body;
+    const id = req.params.id;
+    const url = req.body.url;
     await sql.query("DELETE FROM todos WHERE todo_id = ? AND user_id = ?", [id, req.user.id]);
     req.flash("success", "The to-do was deleted");
     res.json({ redirect: url });
