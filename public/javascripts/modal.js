@@ -30,7 +30,7 @@ function modalHandlers(id, typeOfItem) {
 
     modal.addEventListener("keydown", event => {
         if (event.key === "Escape") {
-            closeModal(id);
+            closeModal(id, typeOfItem);
         }
     });
 
