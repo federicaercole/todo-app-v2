@@ -1,24 +1,35 @@
-import { toggleMenu } from "./utility.js";
+import { toggleMenu, manageClickEvents } from "./utility.js";
 
-const menuBtn = document.querySelector("#menu");
-const nav = document.querySelector(".navigation");
+const navMenu = {
+    btn: document.querySelector("#menu"),
+    menu: document.querySelector(".navigation"),
+    click() { return manageMenu(this) },
+};
 
-function openMenu(menu, btn) {
-    const isMenuOpened = toggleMenu(menu, btn);
+const accountMenu = {
+    btn: document.querySelector("#account"),
+    menu: document.querySelector("#user-menu"),
+    click() { return manageMenu(this) },
+};
 
-    return function toggleSpanText() {
-        const spanBtn = btn.querySelector("span");
-        isMenuOpened() ? spanBtn.textContent = "Close menu" : spanBtn.textContent = "Open menu";
-    };
-}
+const buttons = [
+    navMenu,
+    accountMenu,
+    {
+        btn: document.querySelector("#filter"),
+        menu: document.querySelector("#filter-menu"),
+        click() { return toggleMenu(this); },
+    }];
 
-if (document.querySelector("#account")) {
-    const userMenu = document.querySelector("#user-menu");
-    const accountBtn = document.querySelector("#account");
-    menuBtn.addEventListener("click", openMenu(nav, menuBtn));
-    accountBtn.addEventListener("click", openMenu(userMenu, accountBtn));
-} else {
-    menuBtn.addEventListener("click", openMenu(nav, menuBtn));
+manageClickEvents(buttons);
+
+function manageMenu(menu) {
+    const otherMenu = menu === navMenu ? accountMenu : navMenu;
+    return function toggleAndCloseOtherMenuIfOpened() {
+        const isOtherMenuOpened = otherMenu.menu != null ? otherMenu.menu.classList.contains("show-menu") : false;
+        if (isOtherMenuOpened) toggleMenu(otherMenu)();
+        return toggleMenu(menu)();
+    }
 }
 
 if (document.querySelector("body>.info")) {

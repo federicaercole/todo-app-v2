@@ -1,8 +1,8 @@
-import { fetchData, endpoints, toggleMenu } from "./utility.js";
+import { fetchData, endpoints } from "./utility.js";
 import { openModal } from "./modal.js";
 
 const checkboxes = [...document.querySelectorAll("article input[type='checkbox']")];
-checkboxes.forEach(checkbox => checkbox.addEventListener("change", async (event) => {
+checkboxes.forEach(checkbox => checkbox.addEventListener("click", async (event) => {
     const id = event.target.dataset.id;
     const todo = document.querySelector(`[data-id="${id}"]`);
 
@@ -18,11 +18,8 @@ const deleteBtns = [...document.querySelectorAll(".delete-todo")];
 deleteBtns.forEach(button => button.addEventListener("click", openModal("todo")));
 
 const form = document.querySelector("#filter-menu");
-const filterBtn = document.querySelector("#filter");
 const sortOption = form.querySelector("#sort");
 const params = new URLSearchParams(window.location.search);
-
-filterBtn.addEventListener("click", toggleMenu(form, filterBtn));
 
 function checkFilterCheckboxes(item) {
     document.querySelector(`input[value = "${item}"]`).checked = true;
