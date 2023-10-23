@@ -1,5 +1,6 @@
 import { fetchData, endpoints, transformBtnNodeToObj } from "./utility.js";
 import { openModal } from "./modal.js";
+import { createRenameDOM } from "./category-script.js";
 
 const navMenu = {
     btn: document.querySelector("#menu"),
@@ -13,20 +14,48 @@ const accountMenu = {
     click() { return manageMenu(this) },
 };
 
-const deleteBtns = [...document.querySelectorAll(".delete-todo")].map((item) => transformBtnNodeToObj(item, openModal("todo")));
+const filterBtn = {
+    btn: document.querySelector("#filter"),
+    menu: document.querySelector("#filter-menu"),
+    click() { return toggleMenu(this) },
+};
+
+const closeMsgBtn = {
+    btn: document.querySelector(".close"),
+    msg: document.querySelector("body>.info"),
+    click() { return closeMsg(this.msg) },
+    esc() { return this.click() }
+};
+
+const deleteCategoryBtn = {
+    btn: document.querySelector("#delete"),
+    click() { return openModal("category") },
+}
+
+const renameCategoryBtn = {
+    btn: document.querySelector("#rename"),
+    click() { return createRenameDOM },
+}
+
+const deleteTodoBtns = [...document.querySelectorAll(".delete-todo")].map((item) => transformBtnNodeToObj(item, openModal("todo")));
 const checkboxes = [...document.querySelectorAll("article input[type='checkbox']")].map((item) => transformBtnNodeToObj(item, toggleCheckboxes));
 
 export const buttons = [
     navMenu,
     accountMenu,
-    ...deleteBtns,
+    ...deleteTodoBtns,
     ...checkboxes,
-    {
-        btn: document.querySelector("#filter"),
-        menu: document.querySelector("#filter-menu"),
-        click() { return toggleMenu(this); },
-    },
+    filterBtn,
+    closeMsgBtn,
+    deleteCategoryBtn,
+    renameCategoryBtn
 ];
+
+function closeMsg(msg) {
+    return function deleteMsgDOM() {
+        return msg.remove();
+    }
+}
 
 function toggleMenu(menu) {
     return function openOrCloseMenu() {
@@ -61,5 +90,5 @@ async function toggleCheckboxes(event) {
     } else {
         todo.classList.remove("done");
     }
-    fetchData(`${endpoints.status}${id}`, { method: "PUT" });
+    return fetchData(`${endpoints.status}${id}`, { method: "PUT" });
 }

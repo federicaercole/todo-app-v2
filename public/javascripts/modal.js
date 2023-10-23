@@ -1,5 +1,5 @@
 
-import { endpoints, fetchData } from "./utility.js";
+import { endpoints, fetchData, handleEscKey } from "./utility.js";
 
 const modal = document.querySelector(".modal");
 const cancelBtn = document.querySelector("#cancel");
@@ -28,11 +28,7 @@ export function openModal(typeOfItem) {
 function modalHandlers(id, typeOfItem) {
     modal.addEventListener("keydown", focusTrap);
 
-    modal.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-            closeModal(id, typeOfItem);
-        }
-    });
+    modal.addEventListener("keydown", handleEscKey(() => closeModal(id, typeOfItem)));
 
     cancelBtn.addEventListener("click", () => closeModal(id, typeOfItem));
     confirmBtn.addEventListener("click", () => deleteItem(id, typeOfItem));
