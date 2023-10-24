@@ -1,18 +1,17 @@
-import { fetchData, endpoints } from "./utility.js";
+export function manageFilterMenu(menu) {
+    const sortOption = menu.querySelector("#sort");
+    const params = new URLSearchParams(window.location.search);
 
-const form = document.querySelector("#filter-menu");
-const sortOption = form.querySelector("#sort");
-const params = new URLSearchParams(window.location.search);
+    function checkFilterCheckboxes(item) {
+        document.querySelector(`input[value="${item}"]`).checked = true;
+    }
 
-function checkFilterCheckboxes(item) {
-    document.querySelector(`input[value = "${item}"]`).checked = true;
-}
-
-if (params.has("sort")) {
-    sortOption.value = params.get("sort");
-    params.getAll("priority[]").forEach(checkFilterCheckboxes);
-    params.getAll("done[]").forEach(checkFilterCheckboxes);
-} else {
-    sortOption.value = "desc";
-    [...form.querySelectorAll("input[type='checkbox']")].forEach(item => item.checked = false);
+    if (params.has("sort")) {
+        sortOption.value = params.get("sort");
+        params.getAll("priority[]").map(checkFilterCheckboxes);
+        params.getAll("done[]").map(checkFilterCheckboxes);
+    } else {
+        sortOption.value = "desc";
+        [...menu.querySelectorAll("input[type='checkbox']")].map(item => item.checked = false);
+    }
 }

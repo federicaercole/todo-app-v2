@@ -1,4 +1,4 @@
-import { fetchData, endpoints, transformBtnNodeToObj } from "./utility.js";
+import { fetchData, endpoints, transformBtnNodeToObj, checkIfItemExistsInDOM } from "./utility.js";
 import { openModal } from "./modal.js";
 import { createRenameDOM } from "./category-script.js";
 
@@ -40,7 +40,7 @@ const renameCategoryBtn = {
 const deleteTodoBtns = [...document.querySelectorAll(".delete-todo")].map((item) => transformBtnNodeToObj(item, openModal("todo")));
 const checkboxes = [...document.querySelectorAll("article input[type='checkbox']")].map((item) => transformBtnNodeToObj(item, toggleCheckboxes));
 
-export const buttons = [
+const buttons = [
     navMenu,
     accountMenu,
     ...deleteTodoBtns,
@@ -50,6 +50,14 @@ export const buttons = [
     deleteCategoryBtn,
     renameCategoryBtn
 ];
+
+export function manageBtnEvents() {
+    const existentItems = buttons.filter(checkIfItemExistsInDOM);
+    return existentItems.map(item => {
+        item.btn.addEventListener("click", item.click());
+        if (item.esc) document.addEventListener("keydown", handleEscKey(item.esc()));
+    });
+}
 
 function closeMsg(msg) {
     return function deleteMsgDOM() {
@@ -91,4 +99,27 @@ async function toggleCheckboxes(event) {
         todo.classList.remove("done");
     }
     return fetchData(`${endpoints.status}${id}`, { method: "PUT" });
+}
+
+export function filterMenuDOM() {
+    const filterMenu = checkIfItemExistsInDOM(filterBtn);
+    if (filterMenu) return manageFilterMenu(filterBtn.menu);
+}
+
+function manageFilterMenu(menu) {
+    const sortOption = menu.querySelector("#sort");
+    const params = new URLSearchParams(window.location.search);
+
+    function checkFilterCheckboxes(item) {
+        document.querySelector(`input[value="${item}"]`).checked = true;
+    }
+
+    if (params.has("sort")) {
+        sortOption.value = params.get("sort");
+        params.getAll("priority[]").map(checkFilterCheckboxes);
+        params.getAll("done[]").map(checkFilterCheckboxes);
+    } else {
+        sortOption.value = "desc";
+        [...menu.querySelectorAll("input[type='checkbox']")].map(item => item.checked = false);
+    }
 }

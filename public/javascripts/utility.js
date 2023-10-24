@@ -10,17 +10,9 @@ export async function fetchData(url, options) {
     return data;
 }
 
-function checkIfItemExistsInDOM(item) {
+export function checkIfItemExistsInDOM(item) {
     const prop = Object.keys(item)[0];
     return document.contains(item[prop]);
-}
-
-export function manageBtnEvents(items) {
-    const existentItems = items.filter(checkIfItemExistsInDOM);
-    existentItems.map(item => {
-        item.btn.addEventListener("click", item.click());
-        if (item.esc) document.addEventListener("keydown", handleEscKey(item.esc()));
-    });
 }
 
 export function handleEscKey(callback) {

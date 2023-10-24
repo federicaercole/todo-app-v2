@@ -1,9 +1,10 @@
-import { manageBtnEvents } from "./utility.js";
-import { buttons } from "./buttons.js";
+import { manageBtnEvents, filterMenuDOM } from "./buttons.js";
 
-manageBtnEvents(buttons);
+manageBtnEvents();
+filterMenuDOM();
+highlightCurrentPage();
 
-if (document.querySelector(`a[href="${window.location.pathname}"`)) {
+function highlightCurrentPage() {
     const currentNavElement = document.querySelector(`a[href="${window.location.pathname}"`);
     currentNavElement.setAttribute("aria-current", "page");
 }
