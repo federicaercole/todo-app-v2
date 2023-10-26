@@ -1,4 +1,4 @@
-import { fetchData, endpoints, transformBtnNodeToObj, checkIfItemExistsInDOM } from "./utility.js";
+import { fetchData, endpoints, transformBtnNodeToObj, checkIfItemExistsInDOM, handleEscKey } from "./utility.js";
 import { openModal } from "./modal.js";
 import { createRenameDOM } from "./category-script.js";
 

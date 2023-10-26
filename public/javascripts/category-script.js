@@ -1,47 +1,81 @@
+import { handleEscKey, endpoints } from "./utility.js";
 import { openModal } from "./modal.js";
 
-const categoryUrl = document.querySelector("main").dataset.id;
-const h1 = document.querySelector("h1");
-const categoryName = h1.innerText;
+const categoryName = document.querySelector("h1").innerText;
+const categoryUrl = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
 const errorIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
 focusable="false">
 <path fill="currentColor"
     d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8z" />
 </svg>`
 
-const deleteBtn = document.querySelector("#delete");
-deleteBtn.addEventListener("click", openModal("category"));
+function createElement(elem, elemAttr) {
+    const element = document.createElement(elem);
+    for (const attr in elemAttr) {
+        element.setAttribute(attr, elemAttr[attr]);
+    }
 
-const renameBtn = document.querySelector("#rename");
-renameBtn.addEventListener("click", createRenameDOM);
+    return element;
+}
 
-function createRenameDOM() {
-    const form = document.createElement("form");
+const formAttr = {
+    method: "post",
+    action: `${endpoints.category}${categoryUrl}?_method=PUT`,
+};
+
+const inputAttr = {
+    type: "text",
+    name: "name",
+    minlength: 3,
+    maxlength: 30,
+    ["aria-invalid"]: false,
+    ["aria-describedby"]: "cat-error",
+    ["aria-label"]: "New category name",
+    value: categoryName,
+};
+
+const saveBtnAttr = {
+    type: "submit",
+};
+
+const btnAttr = {
+    type: "button",
+};
+
+const renameBtnAttr = {
+    type: "button",
+    id: "rename",
+};
+
+const deleteBtnAttr = {
+    type: "button",
+    id: "delete",
+    ["data-id"]: categoryUrl,
+};
+
+const errorAttr = {
+    ["aria-live"]: "polite",
+    id: "cat-error",
+};
+
+export function createRenameDOM() {
+    const form = createElement("form", formAttr);
     form.noValidate = true;
-    form.setAttribute("method", "post");
-    form.setAttribute("action", `/todo/category/${categoryUrl}?_method=PUT`);
-    const input = document.createElement("input");
-    input.setAttribute("type", "text");
-    input.setAttribute("name", "name");
+
+    const input = createElement("input", inputAttr);
     input.required = true;
-    input.setAttribute("minlength", "3");
-    input.setAttribute("maxlength", "30");
-    input.setAttribute("aria-invalid", "false");
-    input.setAttribute("aria-describedby", "cat-error");
-    input.value = categoryName;
-    input.setAttribute("aria-label", "New category name");
-    const cancelBtn = document.createElement("button");
+
+    const cancelBtn = createElement("button", btnAttr);
     cancelBtn.textContent = "Cancel";
-    cancelBtn.setAttribute("type", "button");
-    const saveBtn = document.createElement("button");
+
+    const saveBtn = createElement("button", saveBtnAttr);
     saveBtn.textContent = "Save";
-    saveBtn.setAttribute("type", "submit");
+
     const headerDiv = document.querySelector("header>div");
     headerDiv.replaceWith(form);
-    const error = document.createElement("p");
+
+    const error = createElement("p", errorAttr);
     error.classList.add("info", "error", "hidden");
-    error.setAttribute("aria-live", "polite");
-    error.id = "cat-error";
 
     form.append(input);
     form.append(cancelBtn);
@@ -49,30 +83,31 @@ function createRenameDOM() {
     form.before(error);
     input.focus();
 
+    return renameDOMHandlers(form, cancelBtn);
+}
+
+function renameDOMHandlers(form, cancelBtn) {
     cancelBtn.addEventListener("click", resetDOM);
-    form.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-            resetDOM();
-        }
-    });
-    form.addEventListener("submit", (event) => formValidation(event));
+    form.addEventListener("keydown", handleEscKey(resetDOM));
+    form.addEventListener("submit", formValidation);
 }
 
 function resetDOM() {
     const div = document.createElement("div");
-    const renameBtn = document.createElement("button");
+
+    const renameBtn = createElement("button", renameBtnAttr);
     renameBtn.textContent = "Rename";
-    renameBtn.setAttribute("type", "button");
     renameBtn.classList.add("link");
-    renameBtn.id = "rename";
-    const deleteBtn = document.createElement("button");
+
+    const deleteBtn = createElement("button", deleteBtnAttr);
     deleteBtn.textContent = "Delete";
-    deleteBtn.setAttribute("type", "button");
     deleteBtn.classList.add("link");
-    deleteBtn.id = "delete";
+
     const form = document.querySelector("form");
+
     const h1 = document.createElement("h1");
     h1.textContent = categoryName;
+
     const error = document.querySelector(".info.error");
 
     form.replaceWith(div);
@@ -82,8 +117,12 @@ function resetDOM() {
     renameBtn.focus();
     error.remove();
 
+    return resetDOMHandlers(renameBtn, deleteBtn);
+}
+
+function resetDOMHandlers(renameBtn, deleteBtn) {
     renameBtn.addEventListener("click", createRenameDOM);
-    deleteBtn.addEventListener("click", openModalCategory);
+    deleteBtn.addEventListener("click", openModal("category"));
 }
 
 function formValidation(event) {
