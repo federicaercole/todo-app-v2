@@ -4,27 +4,22 @@ focusable="false">
     d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8z" />
 </svg>`;
 
-const form = document.querySelector("form");
-
 const catFields = {
     name: {
-        getInput() { return document.querySelector("input[name='name']") },
-        getError() { return document.querySelector("#cat-err") },
+        setFields() { return evaluateFields.call(this, "[name='name']", "#cat-err") },
         errorMsg: "Category name must be between 3 and 30 characters",
-        isFieldValid() { return this.getInput().validity.valid },
+        isFieldValid() { return this.input.validity.valid },
     }
 };
 
 const todoFields = {
     title: {
-        input: document.querySelector("input[name='title']"),
-        error: document.querySelector("#title-err"),
+        setFields() { return evaluateFields.call(this, "#title", "#title-err") },
         errorMsg: "To-do title must be between 1 and 100 characters",
         isFieldValid() { return this.input.validity.valid },
     },
     date: {
-        input: document.querySelector("input[name='due_date']"),
-        error: document.querySelector("#date-err"),
+        setFields() { return evaluateFields.call(this, "#due-date", "#date-err") },
         errorMsg: "You must insert a valid due date",
         isFieldValid() { return this.input.validity.valid },
     }
@@ -32,14 +27,12 @@ const todoFields = {
 
 const userFields = {
     email: {
-        input: document.querySelector("input[name='email']"),
-        error: document.querySelector("#email-err"),
+        setFields() { return evaluateFields.call(this, "#email", "#email-err") },
         errorMsg: "Must be a valid email address",
         isFieldValid() { return this.input.validity.valid },
     },
     password: {
-        input: document.querySelector("input[name='password']"),
-        error: document.querySelector("#password-err"),
+        setFields() { return evaluateFields.call(this, "#password", "#password-err") },
         errorMsg: "You must provide a password",
         isFieldValid() { return this.input.validity.valid },
     }
@@ -47,8 +40,7 @@ const userFields = {
 
 const signupFields = {
     confirmPassword: {
-        input: document.querySelector("input[name='confirm-password']"),
-        error: document.querySelector("#password-conf-err"),
+        setFields() { return evaluateFields.call(this, "#confirm-password", "#password-conf-err") },
         errorMsg: "Passwords do not match",
         isFieldValid() { return this.input.value === userFields.password.input.value },
     }
@@ -56,16 +48,23 @@ const signupFields = {
 
 const fields = [catFields, todoFields, userFields, signupFields];
 
-form.addEventListener("submit", formValidation());
-
 export function formValidation() {
-    const fieldsInPage = fields.filter(item => {
+
+    const evaluatedFields = fields.map(item => {
+        for (const field in item) {
+            item[field].setFields();
+        }
+        return item;
+    });
+
+    const activeFields = evaluatedFields.filter(item => {
         for (const field in item) {
             return item[field].input;
         }
     });
+
     return function preventSubmission(event) {
-        fieldsInPage.forEach(field => {
+        activeFields.forEach(field => {
             if (!validateForm(field)) {
                 event.preventDefault();
             }
@@ -96,4 +95,9 @@ function validateForm(fields) {
     }, true);
 
     return isFormValid;
+}
+
+function evaluateFields(input, error) {
+    this.input = document.querySelector(input);
+    this.error = document.querySelector(error);
 }
