@@ -3,32 +3,30 @@
 
 <%- include("./partials/head.ejs") %>
 
-  <body>
-    <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-    <%- include("./partials/message.ejs") %>
-      <%- include("./partials/user-bar.ejs") %>
-        <div class="page">
-          <%- include("./partials/menu.ejs") %>
-            <main data-id="<%= category.url %>" id="main">
-              <header>
-                <div>
-                  <h1>
-                    <%= title %>
-                  </h1>
-                  <div>
-                    <button type="button" id="rename" class="link">Rename</button>
-                    <button type="button" id="delete" class="link">Delete</button>
-                  </div>
-                </div>
-                <%- include("./partials/filters.ejs") %>
-              </header>
-              <%- include("./partials/todos.ejs") %>
-            </main>
+<body>
+  <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
+  <%- include("./partials/message.ejs") %>
+  <%- include("./partials/user-bar.ejs") %>
+  <div class="page">
+    <%- include("./partials/menu.ejs") %>
+    <main id="main">
+      <header>
+        <div>
+          <h1>
+            <%= title %>
+          </h1>
+          <div>
+            <button type="button" id="rename" class="link">Rename</button>
+            <button type="button" id="delete" class="link" data-id="<%= category.url %>">Delete</button>
+          </div>
         </div>
-        <%- include("./partials/modal.ejs") %>
-          <script src="/javascripts/navigation.js"></script>
-          <script src="/javascripts/script.js"></script>
-          <script src="/javascripts/category-script.js"></script>
-  </body>
+        <%- include("./partials/filters.ejs") %>
+      </header>
+      <%- include("./partials/todos.ejs") %>
+    </main>
+  </div>
+  <%- include("./partials/modal.ejs") %>
+  <script src="/javascripts/index.js" type="module"></script>
+</body>
 
 </html>

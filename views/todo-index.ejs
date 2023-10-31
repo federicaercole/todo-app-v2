@@ -3,25 +3,24 @@
 
 <%- include("./partials/head.ejs") %>
 
-  <body>
-    <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-    <%- include("./partials/message.ejs") %>
-      <%- include("./partials/user-bar.ejs") %>
-        <div class="page">
-          <%- include("./partials/menu.ejs") %>
-            <main id="main">
-              <header>
-                <h1>
-                  <%= title %>
-                </h1>
-                <%- include("./partials/filters.ejs") %>
-              </header>
-              <%- include("./partials/todos.ejs") %>
-            </main>
-        </div>
-        <%- include("./partials/modal.ejs") %>
-          <script src="/javascripts/navigation.js"></script>
-          <script src="/javascripts/script.js"></script>
-  </body>
+<body>
+  <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
+  <%- include("./partials/message.ejs") %>
+  <%- include("./partials/user-bar.ejs") %>
+  <div class="page">
+    <%- include("./partials/menu.ejs") %>
+    <main id="main">
+      <header>
+        <h1>
+          <%= title %>
+        </h1>
+        <%- include("./partials/filters.ejs") %>
+      </header>
+      <%- include("./partials/todos.ejs") %>
+    </main>
+  </div>
+  <%- include("./partials/modal.ejs") %>
+  <script src="/javascripts/index.js" type="module"></script>
+</body>
 
 </html>

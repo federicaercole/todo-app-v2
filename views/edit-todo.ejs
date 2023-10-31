@@ -3,60 +3,58 @@
 
 <%- include("./partials/head.ejs") %>
 
-  <body>
-    <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
-    <%- include("./partials/message.ejs") %>
-      <%- include("./partials/user-bar.ejs") %>
-        <div class="page">
-          <%- include("./partials/menu.ejs") %>
-            <main id="main">
-              <header>
-                <h1>
-                  <%= title %>
-                </h1>
-              </header>
-              <% const adjustDateToLocalTimeZone=date=>{ const dateCopy=new Date(date);
+<body>
+  <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
+  <%- include("./partials/message.ejs") %>
+  <%- include("./partials/user-bar.ejs") %>
+  <div class="page">
+    <%- include("./partials/menu.ejs") %>
+    <main id="main">
+      <header>
+        <h1>
+          <%= title %>
+        </h1>
+      </header>
+      <% const adjustDateToLocalTimeZone=date=>{ const dateCopy=new Date(date);
                 dateCopy.setTime(dateCopy.getTime()
                 - dateCopy.getTimezoneOffset()*60*1000); return dateCopy.toISOString().split('T')[0]; } %>
-                <form method="post" action="/todo/<%= todo.todo_id %>?_method=PUT" novalidate>
-                  <div>
-                    <p class="info error hidden" id="title-err" aria-live="polite"></p>
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" value="<%= todo.title %>" minlength="1" maxlength="100"
-                      aria-describedby="title-err" aria-invalid="false" required>
-                  </div>
-                  <div>
-                    <p class="info error hidden" id="date-err" aria-live="polite"></p>
-                    <label for="due-date">Due date</label>
-                    <input type="date" id="due-date" name="due_date"
-                      value="<%= adjustDateToLocalTimeZone(todo.due_date) %>" aria-describedby="date-err"
-                      aria-invalid="false" required>
-                  </div>
-                  <div>
-                    <label for="priority">Priority</label>
-                    <select id="priority" name="priority">
-                      <option value="None" <%=todo.priority==="None" ? "selected" : "" %>>None</option>
-                      <option value="Low" <%=todo.priority==="Low" ? "selected" : "" %>>Low</option>
-                      <option value="Medium" <%=todo.priority==="Medium" ? "selected" : "" %>>Medium</option>
-                      <option value="High" <%=todo.priority==="High" ? "selected" : "" %>>High</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="category">Category</label>
-                    <select id="category" name="category">
-                      <% categories.forEach(category=>{ %>
-                        <option value="<%= category.cat_id %>" <%=todo.category==category.cat_id ? "selected" : "" %>>
-                          <%= category.name %>
-                        </option>
-                        <% }) %>
-                    </select>
-                  </div>
-                  <button type="submit">Edit To-do</button>
-                </form>
-            </main>
+      <form method="post" action="/todo/<%= todo.todo_id %>?_method=PUT" novalidate>
+        <div>
+          <p class="info error hidden" id="title-err" aria-live="polite"></p>
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" value="<%= todo.title %>" minlength="1" maxlength="100"
+            aria-describedby="title-err" aria-invalid="false" required>
         </div>
-        <script src="/javascripts/navigation.js"></script>
-        <script src="/javascripts/todo-validation.js"></script>
-  </body>
+        <div>
+          <p class="info error hidden" id="date-err" aria-live="polite"></p>
+          <label for="due-date">Due date</label>
+          <input type="date" id="due-date" name="due_date" value="<%= adjustDateToLocalTimeZone(todo.due_date) %>"
+            aria-describedby="date-err" aria-invalid="false" required>
+        </div>
+        <div>
+          <label for="priority">Priority</label>
+          <select id="priority" name="priority">
+            <option value="None" <%=todo.priority==="None" ? "selected" : "" %>>None</option>
+            <option value="Low" <%=todo.priority==="Low" ? "selected" : "" %>>Low</option>
+            <option value="Medium" <%=todo.priority==="Medium" ? "selected" : "" %>>Medium</option>
+            <option value="High" <%=todo.priority==="High" ? "selected" : "" %>>High</option>
+          </select>
+        </div>
+        <div>
+          <label for="category">Category</label>
+          <select id="category" name="category">
+            <% categories.forEach(category=>{ %>
+            <option value="<%= category.cat_id %>" <%=todo.category==category.cat_id ? "selected" : "" %>>
+              <%= category.name %>
+            </option>
+            <% }) %>
+          </select>
+        </div>
+        <button type="submit">Edit To-do</button>
+      </form>
+    </main>
+  </div>
+  <script src="/javascripts/index.js" type="module"></script>
+</body>
 
 </html>
