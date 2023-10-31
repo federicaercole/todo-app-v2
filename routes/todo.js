@@ -4,7 +4,7 @@ const todoController = require('../controllers/todoController');
 const categoryRouter = require('../routes/category');
 
 router.get('/all', todoController.getAllTodos);
-router.put('/', todoController.changeTodoStatus);
+router.put('/status/:id', todoController.changeTodoStatus);
 
 router.use('/category', categoryRouter);
 

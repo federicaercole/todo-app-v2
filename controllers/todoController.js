@@ -94,7 +94,7 @@ const getAllTodos = ash(async (req, res) => {
 });
 
 const changeTodoStatus = ash(async (req, res) => {
-    const todoId = req.body.id;
+    const todoId = req.params.id;
     const [result] = await sql.query("SELECT done FROM todos WHERE todo_id = ? AND user_id = ?", [todoId, req.user.id]);
     const status = result[0].done === 0 ? 1 : 0;
     await sql.query("UPDATE todos SET done = ? WHERE todo_id = ?", [status, todoId])
