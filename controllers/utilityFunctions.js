@@ -29,12 +29,22 @@ function isAuth(req, res, next) {
     res.redirect("/sign-in");
 }
 
-function checkIfThereAreErrors(req, res, redirectTo) {
+function checkIfThereAreErrors(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const errorsArray = errors.array().map(item => item.msg);
-        req.flash("error", errorsArray);
-        res.redirect(redirectTo);
+        const errorsArray = Object.values(errors.array().reduce((acc, curr) => {
+            if (!acc[curr.path]) {
+                acc[curr.path] = {
+                    [curr.path]: [curr.msg]
+                }
+            } else {
+                acc[curr.path] = {
+                    [curr.path]: [Object.values(acc[curr.path]).toString(), curr.msg]
+                }
+            }
+            return acc;
+        }, {}));
+        res.json({ errors: errorsArray });
         return true;
     }
     return false;

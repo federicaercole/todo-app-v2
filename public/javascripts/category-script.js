@@ -1,6 +1,6 @@
 import { handleEscKey, endpoints } from "./utility.js";
 import { openModal } from "./modal.js";
-import { formValidation } from "./validation.js";
+import { manageForm } from "./validation.js";
 
 const categoryName = document.querySelector("h1").innerText;
 const categoryUrl = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
@@ -83,7 +83,7 @@ export function createRenameDOM() {
 }
 
 function renameDOMHandlers(form, cancelBtn) {
-    form.addEventListener("submit", formValidation());
+    manageForm();
     cancelBtn.addEventListener("click", resetDOM);
     form.addEventListener("keydown", handleEscKey(resetDOM));
 }

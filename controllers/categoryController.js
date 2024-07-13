@@ -77,13 +77,13 @@ const categoryNewGet = ash(async (req, res) => {
 const categoryNewPost = [
     formValidation,
     ash(async (req, res) => {
-        const errorsExist = checkIfThereAreErrors(req, res, "/todo/category/new");
+        const errorsExist = checkIfThereAreErrors(req, res);
         if (!errorsExist) {
             const { name } = req.body;
             await createNewCategory(name, req.user.id);
             const category = await getCategoryByName(name, req.user.id);
             req.flash("success", "New category added!")
-            res.redirect(`/todo/category/${category.url}`);
+            res.json({ redirect: `/todo/category/${category.url}` })
         }
     }
     )];
@@ -99,13 +99,13 @@ const categoryPut = [
     formValidation,
     ash(async (req, res) => {
         const url = req.params.category;
-        const errorsExist = checkIfThereAreErrors(req, res, `/todo/category/${url}`);
+        const errorsExist = checkIfThereAreErrors(req, res);
         if (!errorsExist) {
             const { name } = req.body;
             const categoryUrl = createCategoryUrl(name);
             await sql.query("UPDATE categories SET name = ?, url = ? WHERE url = ? AND user_id = ?", [name, categoryUrl, url, req.user.id]);
             req.flash("success", "Category name was updated.")
-            res.redirect(`/todo/category/${categoryUrl}`);
+            res.json({ redirect: `/todo/category/${categoryUrl}` });
         }
     }
     )];
