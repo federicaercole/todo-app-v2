@@ -31,12 +31,12 @@ const todoNewGet = ash(async (req, res) => {
 const todoNewPost = [
     formValidation,
     ash(async (req, res) => {
-        const errorsExist = checkIfThereAreErrors(req, res, "/todo/new");
+        const errorsExist = checkIfThereAreErrors(req, res);
         if (!errorsExist) {
             const { title, due_date, priority, category } = req.body;
             await createTodo(title, due_date, priority, category, req.user.id);
             req.flash("success", "New to-do created");
-            res.redirect('/todo/all');
+            res.json({ redirect: `/todo/all` });
         }
     })];
 
@@ -53,12 +53,12 @@ const todoEditPut = [
     formValidation,
     ash(async (req, res) => {
         const todoId = req.params.id;
-        const errorsExist = checkIfThereAreErrors(req, res, `todo/${todoId}`);
+        const errorsExist = checkIfThereAreErrors(req, res);
         if (!errorsExist) {
             const { title, due_date, priority, category } = req.body;
             await updateTodo(title, due_date, priority, category, todoId, req.user.id);
             req.flash("success", "The to-do was edited");
-            res.redirect(`/todo/${todoId}`);
+            res.json({ redirect: `/todo/${todoId}` });
         }
     })];
 
