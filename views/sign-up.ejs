@@ -4,8 +4,8 @@
 <%- include("./partials/head.ejs") %>
 
 <body>
-    <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
     <%- include("./partials/message.ejs") %>
+    <a class="skip-link visually-hidden" href="#main">Skip to main content</a>
     <%- include("./partials/home-bar.ejs") %>
     <div class="card">
         <main id="main">
@@ -16,20 +16,20 @@
             </header>
             <form method="post" action="/user" novalidate>
                 <div>
-                    <p class="info error hidden" id="email-err" aria-live="polite"></p>
+                    <p class="info error hidden" id="email-err"></p>
                     <label for="email">Email address</label>
                     <input type="email" id="email" name="email" aria-describedby="email-err" aria-invalid="false"
                         required>
                 </div>
                 <div>
-                    <p class="info error hidden" id="password-err" aria-live="polite"></p>
-                    <p class="info error hidden" id="password-conf-err" aria-live="polite"></p>
+                    <p class="info error hidden" id="password-err"></p>
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" aria-describedby="password-err"
                         aria-invalid="false" required>
+                    <p class="info error hidden" id="password-conf-err"></p>
                     <label for="confirm-password">Confirm password</label>
-                    <input type="password" id="confirm-password" name="confirm-password" aria-describedby="password-err"
-                        aria-invalid="false" required>
+                    <input type="password" id="confirm-password" name="confirm-password"
+                        aria-describedby="password-conf-err" aria-invalid="false" required>
                 </div>
                 <button type="submit">Sign up</button>
             </form>
