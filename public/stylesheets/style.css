@@ -727,6 +727,11 @@ p.info {
   align-items: center;
 }
 
+.info ul {
+  flex-direction: column;
+  margin-block-start: 0;
+}
+
 .info li+li {
   margin-block-start: 0.5rem;
 }

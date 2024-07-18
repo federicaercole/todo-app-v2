@@ -44,7 +44,7 @@ async function createNewCategory(name, userId) {
     return result;
 }
 
-const formValidation = body("name", "Category name must be between 3 and 30 characters").trim().isLength({ min: 3, max: 30 })
+const formValidation = body("name", "Category name must be between 3 and 30 characters").trim().isLength({ min: 3, max: 30 }).bail()
     .matches(/\p{L}/u).withMessage("Category name must contain at least one letter").escape().custom(async (value, { req }) => {
         const categoryExists = await getCategoryByName(value, req.user.id);
         if (categoryExists) {
